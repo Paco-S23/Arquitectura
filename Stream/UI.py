@@ -80,21 +80,30 @@ st.markdown("""
 
 # --- CABECERA (HERO) ---
 
-# Lógica para cargar la imagen localmente o usar fallback si no existe
-# Esto evita que la app se rompa si olvidas subir la imagen
-image_path = "stream/imagen_2025-12-07_194253899.png"
-# Nota: Si pruebas esto en local (no en Cloud), la ruta podría ser solo el nombre del archivo dependiendo de dónde corras el comando.
-# Streamlit Cloud corre desde la raíz del repo, por eso "stream/..."
+# --- CORRECCIÓN IMPORTANTE DE RUTAS ---
+# Nombre del archivo de imagen
+image_file = "imagen_2025-12-07_194253899.png"
 
-if os.path.exists(image_path):
-    st.image(image_path, use_container_width=True)
+# Intenta cargar la imagen buscando en varias rutas posibles
+# 1. Ruta relativa a la carpeta del script (lo más seguro)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+path_local = os.path.join(current_dir, image_file)
+
+# 2. Ruta relativa desde la raíz del repositorio (usando 'Stream' con mayúscula)
+path_repo = f"Stream/{image_file}"
+
+if os.path.exists(path_local):
+    st.image(path_local, use_container_width=True)
+elif os.path.exists(path_repo):
+    st.image(path_repo, use_container_width=True)
+elif os.path.exists(image_file): # Intento final en la raíz
+    st.image(image_file, use_container_width=True)
 else:
-    # Intenta buscar en la raíz por si acaso
-    if os.path.exists("imagen_2025-12-07_194253899.png"):
-        st.image("imagen_2025-12-07_194253899.png", use_container_width=True)
-    else:
-        st.error("⚠️ No se encontró la imagen. Asegúrate de que 'imagen_2025-12-07_194253899.png' esté en la carpeta 'stream' en GitHub.")
-        st.image("https://placehold.co/800x450/f3f4f6/9ca3af/png?text=SUBE+TU+IMAGEN+AL+REPO", use_container_width=True)
+    st.error("⚠️ No se encuentra la imagen.")
+    # Mensaje de depuración para ver dónde está buscando el sistema
+    st.caption(f"Buscando en: {os.getcwd()}")
+    st.caption(f"Carpeta Stream: {os.path.exists('Stream')}")
+    st.image("https://placehold.co/800x450/f3f4f6/9ca3af/png?text=IMAGEN+NO+ENCONTRADA", use_container_width=True)
 
 st.title("Departamentos 33.10")
 st.markdown("**Puebla, Pue.** | 33 Oriente #10")
