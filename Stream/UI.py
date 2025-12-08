@@ -92,7 +92,7 @@ st.markdown("<div style='text-align: center; color: #555; margin-bottom: 20px;'>
 # --- IMAGEN DE FACHADA (Ahora va debajo del título) ---
 
 # Nombre del archivo de imagen
-image_file = "imagen_2025-12-07_194253899.png"
+image_file = "imagen_2025-12-07_200507713.png"
 
 # Lógica de rutas (igual que antes para evitar errores)
 current_dir = os.path.dirname(os.path.abspath(__file__))
