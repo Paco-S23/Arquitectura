@@ -119,14 +119,14 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 
 st.write("---")
 
-# --- SECCIÓN: UBICACIÓN (TAMAÑO RESTAURADO) ---
-st.subheader("📍 Ubicación Estratégica")
+# --- SECCIÓN: UBICACIÓN (ARREGLADA) ---
+# Se eliminó el st.subheader redundante ya que la imagen tiene el título "Ubicación"
 
 # Mapa
-map_file = "imagen_2025-12-07_202017772.png"
+map_file = "imagen_2025-12-07_201722511.png"
 valid_map_path = load_image(map_file, "MAPA+UBICACION")
 
-# AHORA EL MAPA USA TODO EL ANCHO DISPONIBLE (Sin columnas que lo reduzcan)
+# EL MAPA USA TODO EL ANCHO DISPONIBLE (Sin columnas)
 st.image(valid_map_path, use_container_width=True)
 
 # Botón Maps
@@ -170,7 +170,7 @@ st.subheader("📐 Modelos Disponibles")
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
-    st.markdown("### Modelo A")
+    st.markdown("### Modelo Inversión")
     # PLANO ORIGINAL ÚNICAMENTE
     st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+A", use_container_width=True)
     
@@ -191,7 +191,7 @@ with tab_a:
         """)
 
 with tab_b:
-    st.markdown("### Modelo B")
+    st.markdown("### Modelo Flexibilidad")
     # PLANO ORIGINAL ÚNICAMENTE
     st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+B", use_container_width=True)
     
