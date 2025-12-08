@@ -84,36 +84,34 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# --- FUNCIÓN DE AYUDA PARA CARGAR IMÁGENES ---
+def load_image(filename, fallback_text="IMAGEN"):
+    """Busca la imagen en local o en la carpeta Stream y devuelve la ruta válida."""
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    path_local = os.path.join(current_dir, filename)
+    path_repo = f"Stream/{filename}"
+    
+    if os.path.exists(path_local):
+        return path_local
+    elif os.path.exists(path_repo):
+        return path_repo
+    elif os.path.exists(filename):
+        return filename
+    else:
+        return f"https://placehold.co/800x500/e0e0e0/999999/png?text={fallback_text}"
+
 # --- TÍTULO PRINCIPAL ---
 st.title("Departamentos 33.10")
 st.markdown("<div style='text-align: center; color: #555; margin-bottom: 20px;'><b>Puebla, Pue.</b> | 33 Oriente #10</div>", unsafe_allow_html=True)
 
 
-# --- IMAGEN DE FACHADA (ACTUALIZADA) ---
-# Usamos el nombre del archivo que aparece en tu captura (el más antiguo de los dos nuevos)
+# --- IMAGEN DE FACHADA ---
 image_file = "imagen_2025-12-07_200507713.png"
+valid_image_path = load_image(image_file, "VISTA+FACHADA")
 
-# Lógica de rutas inteligente
-current_dir = os.path.dirname(os.path.abspath(__file__))
-path_local = os.path.join(current_dir, image_file)
-path_repo = f"Stream/{image_file}" # Busca en la carpeta Stream con Mayúscula
-
-valid_image_path = None
-if os.path.exists(path_local):
-    valid_image_path = path_local
-elif os.path.exists(path_repo):
-    valid_image_path = path_repo
-elif os.path.exists(image_file):
-    valid_image_path = image_file
-
-if valid_image_path:
-    # Columnas para centrar y ajustar tamaño
-    col_izq, col_centro, col_der = st.columns([0.5, 3, 0.5]) 
-    with col_centro:
-        st.image(valid_image_path, use_container_width=True)
-else:
-    st.error(f"⚠️ No se encuentra '{image_file}'")
-    st.image("https://placehold.co/800x500/e0e0e0/999999/png?text=VISTA+FACHADA", use_container_width=True)
+col_izq, col_centro, col_der = st.columns([0.5, 3, 0.5]) 
+with col_centro:
+    st.image(valid_image_path, use_container_width=True)
 
 
 # --- PRECIO DESTACADO ---
@@ -121,38 +119,31 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 
 st.write("---")
 
-# --- SECCIÓN: UBICACIÓN (ACTUALIZADA CON TU MAPA) ---
+# --- SECCIÓN: UBICACIÓN (MAPA REDUCIDO) ---
 st.subheader("📍 Ubicación Estratégica")
 
-# Usamos el nombre del archivo MÁS RECIENTE según tu captura
-map_file = "imagen_2025-12-07_202017772.png"
+# Mapa
+map_file = "imagen_2025-12-07_201722511.png"
+valid_map_path = load_image(map_file, "MAPA+UBICACION")
 
-path_map_local = os.path.join(current_dir, map_file)
-path_map_repo = f"Stream/{map_file}"
+# REDUCCIÓN DE TAMAÑO: Usamos columnas [1, 3, 1] para que ocupe aprox el 60% del ancho
+c_map_L, c_map_C, c_map_R = st.columns([1, 3, 1])
+with c_map_C:
+    st.image(valid_map_path, use_container_width=True)
 
-if os.path.exists(path_map_local):
-    st.image(path_map_local, use_container_width=True)
-elif os.path.exists(path_map_repo):
-    st.image(path_map_repo, use_container_width=True)
-elif os.path.exists(map_file):
-    st.image(map_file, use_container_width=True)
-else:
-    st.error(f"⚠️ No se encuentra '{map_file}'")
-    st.image("https://placehold.co/800x600/e0e0e0/999999/png?text=MAPA+DE+UBICACION", use_container_width=True)
-
-# --- BOTÓN DE GOOGLE MAPS ---
+# Botón Maps
 google_maps_url = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
-
 st.markdown(f"""
-    <div style="text-align: center; margin: 20px 0;">
+    <div style="text-align: center; margin: 10px 0 20px 0;">
         <a href="{google_maps_url}" target="_blank" style="text-decoration: none;">
             <button style="
                 background-color: #4285F4; 
                 color: white; 
                 border: none; 
-                padding: 12px 24px; 
+                padding: 10px 20px; 
                 border-radius: 50px; 
                 font-weight: bold; 
+                font-size: 14px;
                 cursor: pointer;
                 box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 📍 Ver en Google Maps
@@ -181,8 +172,16 @@ st.subheader("📐 Modelos Disponibles")
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
-    st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+A", use_container_width=True)
     st.markdown("### Modelo Inversión")
+    # PLANO ORIGINAL
+    st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+A", use_container_width=True)
+    
+    # BOCETO DE RECÁMARA (NUEVO)
+    # Sube tu imagen como 'recamara_a.png' o cambia el nombre aquí
+    img_recamara_a = load_image("recamara_a.png", "BOCETO+RECAMARA+A")
+    st.image(img_recamara_a, caption="Proyección de Recámara Principal", use_container_width=True)
+    
+    st.write("") # Espacio
     
     c1, c2 = st.columns(2)
     with c1:
@@ -199,9 +198,17 @@ with tab_a:
         """)
 
 with tab_b:
-    st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+B", use_container_width=True)
     st.markdown("### Modelo Flexibilidad")
+    # PLANO ORIGINAL
+    st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+B", use_container_width=True)
     
+    # BOCETO DE RECÁMARA (NUEVO)
+    # Sube tu imagen como 'recamara_b.png' o cambia el nombre aquí
+    img_recamara_b = load_image("recamara_b.png", "BOCETO+RECAMARA+B")
+    st.image(img_recamara_b, caption="Proyección de Espacios Amplios", use_container_width=True)
+
+    st.write("") # Espacio
+
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("""
@@ -215,6 +222,25 @@ with tab_b:
         * 🚗 2 Cajones
         * 📦 Bodega
         """)
+
+st.write("---")
+
+# --- NUEVA SECCIÓN: GALERÍA DE DECORACIÓN ---
+st.subheader("✨ Estilo y Acabados")
+st.write("Una muestra de la atmósfera que podrás disfrutar.")
+
+# Sube tus imágenes como 'decoracion_1.png', 'decoracion_2.png', etc.
+col_d1, col_d2 = st.columns(2)
+with col_d1:
+    img_deco1 = load_image("decoracion_1.png", "DECORACION+1")
+    st.image(img_deco1, use_container_width=True)
+with col_d2:
+    img_deco2 = load_image("decoracion_2.png", "DECORACION+2")
+    st.image(img_deco2, use_container_width=True)
+
+# Tercera imagen centrada más grande
+img_deco3 = load_image("decoracion_3.png", "DECORACION+3")
+st.image(img_deco3, use_container_width=True)
 
 st.write("---")
 
