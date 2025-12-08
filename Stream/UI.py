@@ -123,7 +123,7 @@ st.write("---")
 # Se eliminó el st.subheader redundante ya que la imagen tiene el título "Ubicación"
 
 # Mapa
-map_file = "imagen_2025-12-07_201722511.png"
+map_file = "imagen_2025-12-07_202017772.png"
 valid_map_path = load_image(map_file, "MAPA+UBICACION")
 
 # EL MAPA USA TODO EL ANCHO DISPONIBLE (Sin columnas)
