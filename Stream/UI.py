@@ -8,80 +8,93 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- ESTILOS PERSONALIZADOS (CSS - MODO OSCURO ELEGANTE) ---
+# --- ESTILOS PERSONALIZADOS (MODO CLARO MINIMALISTA) ---
 st.markdown("""
 <style>
+    /* 1. Forzar Fondo Blanco Puro y Texto Oscuro (Resuelve el problema de visibilidad) */
+    .stApp, div[data-testid="stAppViewContainer"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
     /* Ocultar elementos de Streamlit */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    
-    /* Fondo general más oscuro para coincidir con tu flyer */
-    .stApp {
-        background-color: #f8f9fa;
-    }
+    header {visibility: hidden;}
 
-    /* Tipografía */
+    /* 2. Tipografía Limpia (Estilo React) */
     h1 {
         font-family: 'Helvetica', sans-serif; 
-        color: #1a1a1a; 
+        color: #111827 !important; /* Gris muy oscuro */
         font-weight: 800; 
         text-transform: uppercase;
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        margin-bottom: 0px;
     }
-    h2 {color: #333; font-weight: 300;}
-    h3 {color: #B8860B; font-weight: 600;}
+    h2 {color: #374151 !important; font-weight: 400;}
+    h3 {color: #111827 !important; font-weight: 600;}
+    p, li, .stMarkdown {color: #4B5563 !important;} /* Texto gris medio para lectura */
     
-    /* PRECIO DESTACADO */
+    /* 3. Etiqueta de Precio (Estilo Badge) */
     .price-tag {
-        background-color: #555; /* Gris del flyer */
-        color: white;
-        padding: 10px 20px;
-        font-size: 24px;
-        font-weight: bold;
-        border-radius: 5px;
-        text-align: center;
+        background-color: #f3f4f6;
+        color: #111827;
+        padding: 8px 16px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border-radius: 99px; /* Redondeado completo */
+        border: 1px solid #e5e7eb;
+        display: inline-block;
+        margin-top: 10px;
         margin-bottom: 20px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     }
 
-    /* Botones personalizados */
+    /* 4. Tarjetas de Métricas (Ubicación) */
+    div[data-testid="stMetricValue"] {
+        color: #111827 !important;
+    }
+    div[data-testid="stMetricLabel"] {
+        color: #6B7280 !important;
+    }
+
+    /* 5. Botones (Estilo Moderno y Limpio) */
     .stButton>button {
         width: 100%;
-        background-color: #1a1a1a; /* Negro casi puro */
-        color: white;
-        border-radius: 4px;
+        background-color: #111827; /* Casi negro */
+        color: white !important;
+        border-radius: 8px;
         border: none;
-        padding: 16px;
-        text-transform: uppercase;
-        font-weight: bold;
-        letter-spacing: 1px;
-        transition: all 0.3s ease;
+        padding: 14px;
+        font-weight: 600;
+        transition: all 0.2s;
     }
     .stButton>button:hover {
-        background-color: #333;
-        color: #fff;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background-color: #374151; /* Gris oscuro al pasar mouse */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Separadores sutiles */
+    hr {
+        border-color: #f3f4f6;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # --- CABECERA (HERO) ---
-# Placeholder de imagen
-st.image("https://placehold.co/800x500/2b2b2b/FFFFFF/png?text=DEPARTAMENTOS+33.10", use_container_width=True)
+# Usamos columnas para centrar un poco la imagen si es muy ancha
+st.image("https://placehold.co/800x450/f3f4f6/9ca3af/png?text=RENDER+FACHADA", use_container_width=True)
 
 st.title("Departamentos 33.10")
-st.markdown("📍 **UBICACIÓN:** 33 Oriente #10, Puebla, Pue.")
+st.markdown("**Puebla, Pue.** | 33 Oriente #10")
 
-# --- PRECIO (NUEVO) ---
-# Mostramos el precio destacado como en tu flyer
-st.markdown('<div class="price-tag">Desde $2,940,000.00</div>', unsafe_allow_html=True)
+# Precio estilo Badge
+st.markdown('<div class="price-tag">$2,940,000.00</div>', unsafe_allow_html=True)
 
 st.write("---")
 
 # --- SECCIÓN: UBICACIÓN ---
-st.header("📍 Vive cerca de todo")
-st.markdown("Conectividad inigualable en el corazón de Puebla.")
+st.subheader("📍 Ubicación Estratégica")
+st.markdown("Todo lo que necesitas a menos de 15 minutos.")
 
 col1, col2, col3 = st.columns(3)
 with col1:
@@ -91,43 +104,61 @@ with col2:
 with col3:
     st.metric(label="Paseo Bravo", value="13 min")
 
-st.info("💡 **Puntos cercanos:** Plaza Dorada, La Noria, Parque Juárez y Prepa BUAP.")
+# Nota pequeña estilo caption
+st.caption("Cerca de: Plaza Dorada, La Noria, Parque Juárez y Prepa BUAP.")
 
 st.write("---")
 
 # --- SECCIÓN: MODELOS ---
-st.header("📐 Elige tu Espacio")
-tab_a, tab_b = st.tabs(["🏙️ TORRE A (89m²)", "🌇 TORRE B (96m²)"])
+st.subheader("📐 Modelos Disponibles")
+
+# Tabs limpias
+tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
-    st.subheader("Modelo Inversión")
-    # Imagen placeholder para Torre A
-    st.image("https://placehold.co/600x400/e5e7eb/a3a3a3/png?text=Plano+Torre+A", use_container_width=True)
-    col_feat1, col_feat2 = st.columns(2)
-    with col_feat1:
-        st.markdown("- **89 m²** Construcción\n- 🛏️ 2 Recámaras\n- 🚿 2 Baños")
-    with col_feat2:
-        st.markdown("- 🌳 Terraza Privada\n- 🚗 2 Cajones\n- ☀️ Paneles Solares")
+    st.image("https://placehold.co/600x400/f9fafb/d1d5db/png?text=Plano+Torre+A", use_container_width=True)
+    st.markdown("### Modelo Inversión")
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("""
+        * **89 m²** Totales
+        * 🛏️ 2 Recámaras
+        * 🚿 2 Baños
+        """)
+    with c2:
+        st.markdown("""
+        * 🌳 Terraza
+        * 🚗 2 Cajones
+        * ☀️ Paneles Solares
+        """)
 
 with tab_b:
-    st.subheader("Modelo Flexibilidad")
-    # Imagen placeholder para Torre B
-    st.image("https://placehold.co/600x400/e5e7eb/a3a3a3/png?text=Plano+Torre+B", use_container_width=True)
-    col_feat1, col_feat2 = st.columns(2)
-    with col_feat1:
-        st.markdown("- **96 m²** Construcción\n- 🛏️ 2 Recámaras\n- 🚿 2 Baños")
-    with col_feat2:
-        st.markdown("- 🛋️ **Opción 3ª Habitación**\n- 🚗 2 Cajones\n- 📦 Bodega")
+    st.image("https://placehold.co/600x400/f9fafb/d1d5db/png?text=Plano+Torre+B", use_container_width=True)
+    st.markdown("### Modelo Flexibilidad")
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("""
+        * **96 m²** Totales
+        * 🛏️ 2 Recámaras
+        * 🚿 2 Baños
+        """)
+    with c2:
+        st.markdown("""
+        * 🛋️ **Opción 3ª Recámara**
+        * 🚗 2 Cajones
+        * 📦 Bodega
+        """)
 
 st.write("---")
 
-# --- CALL TO ACTION (ACTUALIZADO) ---
-st.subheader("¿Te interesa invertir?")
-st.markdown("Agenda una visita al Showroom directamente con nosotros.")
+# --- CTA WHATSAPP ---
+st.subheader("¿Te interesa?")
+st.write("Agenda tu visita al Showroom.")
 
-# Botón con el número real
-phone_number = "522221256530" # Número extraído de tu imagen
-whatsapp_url = f"https://wa.me/{phone_number}?text=Hola,%20vi%20el%20flyer%20de%20Departamentos%2033.10%20y%20me%20interesa%20m%C3%A1s%20informaci%C3%B3n."
+phone_number = "522221256530"
+whatsapp_url = f"https://wa.me/{phone_number}?text=Hola,%20me%20interesa%20info%20de%20Deptos%2033.10"
 
 st.markdown(f"""
     <a href="{whatsapp_url}" target="_blank" style="text-decoration: none;">
@@ -136,15 +167,16 @@ st.markdown(f"""
             background-color: #25D366; 
             color: white; 
             border: none; 
-            padding: 15px; 
-            border-radius: 5px; 
-            font-weight: bold; 
+            padding: 16px; 
+            border-radius: 8px; 
+            font-weight: 600; 
             font-size: 16px; 
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-            📲 CONTACTAR POR WHATSAPP
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            📲 Agendar Visita por WhatsApp
         </button>
     </a>
 """, unsafe_allow_html=True)
 
-st.markdown("<div style='text-align: center; color: grey; font-size: 12px; margin-top: 30px;'>Departamentos 33.10 | Puebla, Pue.</div>", unsafe_allow_html=True)
+st.markdown("<br><div style='text-align: center; color: #9CA3AF; font-size: 12px;'>Departamentos 33.10 | Diseño Arquitectónico</div>", unsafe_allow_html=True)
