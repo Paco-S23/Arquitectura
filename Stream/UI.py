@@ -125,7 +125,7 @@ st.write("---")
 st.subheader("📍 Ubicación Estratégica")
 
 # Usamos el nombre del archivo MÁS RECIENTE según tu captura
-map_file = "imagen_2025-12-07_201722511.png"
+map_file = "imagen_2025-12-07_202017772.png"
 
 path_map_local = os.path.join(current_dir, map_file)
 path_map_repo = f"Stream/{map_file}"
