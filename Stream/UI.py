@@ -141,7 +141,7 @@ st.markdown(f"""
                 padding: 10px 20px; 
                 border-radius: 50px; 
                 font-weight: bold; 
-                font-size: 12px;
+                font-size: 14px;
                 cursor: pointer;
                 box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 📍 Ver en Google Maps
@@ -170,7 +170,7 @@ st.subheader("📐 Modelos Disponibles")
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
-    st.markdown("### Modelo Inversión")
+    st.markdown("### Modelo A")
     # PLANO ORIGINAL ÚNICAMENTE
     st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+A", use_container_width=True)
     
@@ -191,7 +191,7 @@ with tab_a:
         """)
 
 with tab_b:
-    st.markdown("### Modelo Flexibilidad")
+    st.markdown("### Modelo B")
     # PLANO ORIGINAL ÚNICAMENTE
     st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+B", use_container_width=True)
     
