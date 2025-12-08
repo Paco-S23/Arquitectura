@@ -12,9 +12,9 @@ st.set_page_config(
 # --- ESTILOS PERSONALIZADOS (MODO ARQUITECTÓNICO) ---
 st.markdown("""
 <style>
-    /* 1. Fondo Gris Suave (Menos sobrio, más elegante) */
+    /* 1. Fondo Gris Suave */
     .stApp, div[data-testid="stAppViewContainer"] {
-        background-color: #f5f5f5 !important; /* Gris muy tenue */
+        background-color: #f5f5f5 !important;
         color: #1a1a1a !important;
     }
     
@@ -23,25 +23,25 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* 2. Tipografía con más carácter */
+    /* 2. Tipografía */
     h1 {
         font-family: 'Helvetica', sans-serif; 
         color: #111827 !important; 
         font-weight: 800; 
         text-transform: uppercase;
-        font-size: 2.5rem; /* Un poco más grande para impactar al inicio */
+        font-size: 2.5rem;
         margin-top: 0px;
         margin-bottom: 10px;
-        text-align: center; /* Título centrado se ve mejor si la imagen va abajo */
+        text-align: center;
     }
     
     h2 {color: #374151 !important; font-weight: 400;}
     h3 {color: #111827 !important; font-weight: 600;}
     p, li, .stMarkdown {color: #444444 !important;}
     
-    /* 3. Etiqueta de Precio (Acento visual) */
+    /* 3. Etiqueta de Precio */
     .price-tag {
-        background-color: #2b2b2b; /* Fondo oscuro para contraste */
+        background-color: #2b2b2b;
         color: #ffffff;
         padding: 10px 25px;
         font-size: 1.3rem;
@@ -53,7 +53,7 @@ st.markdown("""
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* 4. Contenedor de Métricas (Tarjetas blancas para resaltar sobre el gris) */
+    /* 4. Métricas */
     div[data-testid="stMetricValue"] {
         color: #111827 !important;
         font-size: 1.5rem !important;
@@ -84,20 +84,19 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- TÍTULO PRINCIPAL (Ahora va primero) ---
+# --- TÍTULO PRINCIPAL ---
 st.title("Departamentos 33.10")
 st.markdown("<div style='text-align: center; color: #555; margin-bottom: 20px;'><b>Puebla, Pue.</b> | 33 Oriente #10</div>", unsafe_allow_html=True)
 
 
-# --- IMAGEN DE FACHADA (Ahora va debajo del título) ---
+# --- IMAGEN DE FACHADA (ACTUALIZADA) ---
+# Usamos el nombre del archivo que aparece en tu captura (el más antiguo de los dos nuevos)
+image_file = "imagen_2025-12-07_200507713.png"
 
-# Nombre del archivo de imagen
-image_file = "imagen_2025-12-07_194253899.png"
-
-# Lógica de rutas (igual que antes para evitar errores)
+# Lógica de rutas inteligente
 current_dir = os.path.dirname(os.path.abspath(__file__))
 path_local = os.path.join(current_dir, image_file)
-path_repo = f"Stream/{image_file}"
+path_repo = f"Stream/{image_file}" # Busca en la carpeta Stream con Mayúscula
 
 valid_image_path = None
 if os.path.exists(path_local):
@@ -107,14 +106,13 @@ elif os.path.exists(path_repo):
 elif os.path.exists(image_file):
     valid_image_path = image_file
 
-# Mostrar imagen centrada con columnas
 if valid_image_path:
-    # Ajustamos columnas para que la imagen no ocupe todo el ancho exageradamente
+    # Columnas para centrar y ajustar tamaño
     col_izq, col_centro, col_der = st.columns([0.5, 3, 0.5]) 
     with col_centro:
         st.image(valid_image_path, use_container_width=True)
 else:
-    st.error("⚠️ No se encuentra la imagen.")
+    st.error(f"⚠️ No se encuentra '{image_file}'")
     st.image("https://placehold.co/800x500/e0e0e0/999999/png?text=VISTA+FACHADA", use_container_width=True)
 
 
@@ -123,11 +121,12 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 
 st.write("---")
 
-# --- SECCIÓN: UBICACIÓN (MODIFICADA CON MAPA Y LINK) ---
+# --- SECCIÓN: UBICACIÓN (ACTUALIZADA CON TU MAPA) ---
 st.subheader("📍 Ubicación Estratégica")
 
-# --- IMAGEN DEL MAPA ---
-map_file = "mapa.jpg" # <--- ¡RECUERDA SUBIR ESTA IMAGEN CON ESTE NOMBRE!
+# Usamos el nombre del archivo MÁS RECIENTE según tu captura
+map_file = "imagen_2025-12-07_201722511.png"
+
 path_map_local = os.path.join(current_dir, map_file)
 path_map_repo = f"Stream/{map_file}"
 
@@ -138,11 +137,10 @@ elif os.path.exists(path_map_repo):
 elif os.path.exists(map_file):
     st.image(map_file, use_container_width=True)
 else:
-    # Fallback si olvidaste subir el mapa
+    st.error(f"⚠️ No se encuentra '{map_file}'")
     st.image("https://placehold.co/800x600/e0e0e0/999999/png?text=MAPA+DE+UBICACION", use_container_width=True)
 
 # --- BOTÓN DE GOOGLE MAPS ---
-# Link directo a la búsqueda de la dirección
 google_maps_url = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
 
 st.markdown(f"""
@@ -165,7 +163,6 @@ st.markdown(f"""
 
 st.markdown("Todo lo que necesitas a menos de 15 minutos.")
 
-# Usamos contenedores para darle fondo blanco a las métricas (opcional visualmente)
 col1, col2, col3 = st.columns(3)
 with col1:
     st.metric(label="Centro Histórico", value="5 min")
