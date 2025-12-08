@@ -9,13 +9,13 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- ESTILOS PERSONALIZADOS (MODO CLARO MINIMALISTA) ---
+# --- ESTILOS PERSONALIZADOS (MODO ARQUITECTÓNICO) ---
 st.markdown("""
 <style>
-    /* 1. Forzar Fondo Blanco Puro y Texto Oscuro */
+    /* 1. Fondo Gris Suave (Menos sobrio, más elegante) */
     .stApp, div[data-testid="stAppViewContainer"] {
-        background-color: #ffffff !important;
-        color: #000000 !important;
+        background-color: #f5f5f5 !important; /* Gris muy tenue */
+        color: #1a1a1a !important;
     }
     
     /* Ocultar elementos de Streamlit */
@@ -23,106 +23,103 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* 2. Tipografía Limpia */
+    /* 2. Tipografía con más carácter */
     h1 {
         font-family: 'Helvetica', sans-serif; 
         color: #111827 !important; 
         font-weight: 800; 
         text-transform: uppercase;
-        font-size: 2.2rem;
-        margin-bottom: 0px;
+        font-size: 2.5rem; /* Un poco más grande para impactar al inicio */
+        margin-top: 0px;
+        margin-bottom: 10px;
+        text-align: center; /* Título centrado se ve mejor si la imagen va abajo */
     }
+    
     h2 {color: #374151 !important; font-weight: 400;}
     h3 {color: #111827 !important; font-weight: 600;}
-    p, li, .stMarkdown {color: #4B5563 !important;}
+    p, li, .stMarkdown {color: #444444 !important;}
     
-    /* 3. Etiqueta de Precio */
+    /* 3. Etiqueta de Precio (Acento visual) */
     .price-tag {
-        background-color: #f3f4f6;
-        color: #111827;
-        padding: 8px 16px;
-        font-size: 1.2rem;
-        font-weight: 700;
-        border-radius: 99px;
-        border: 1px solid #e5e7eb;
+        background-color: #2b2b2b; /* Fondo oscuro para contraste */
+        color: #ffffff;
+        padding: 10px 25px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        border-radius: 8px;
         display: inline-block;
-        margin-top: 10px;
-        margin-bottom: 20px;
+        margin-top: 15px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* 4. Tarjetas de Métricas */
+    /* 4. Contenedor de Métricas (Tarjetas blancas para resaltar sobre el gris) */
     div[data-testid="stMetricValue"] {
         color: #111827 !important;
+        font-size: 1.5rem !important;
     }
     div[data-testid="stMetricLabel"] {
-        color: #6B7280 !important;
+        color: #666666 !important;
     }
-
+    
     /* 5. Botones */
     .stButton>button {
         width: 100%;
         background-color: #111827;
         color: white !important;
-        border-radius: 8px;
+        border-radius: 6px;
         border: none;
-        padding: 14px;
+        padding: 16px;
         font-weight: 600;
+        letter-spacing: 0.5px;
         transition: all 0.2s;
     }
     .stButton>button:hover {
-        background-color: #374151;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background-color: #333333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     
-    hr { border-color: #f3f4f6; }
+    hr { border-color: #e0e0e0; margin: 30px 0; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- CABECERA (HERO) ---
+# --- TÍTULO PRINCIPAL (Ahora va primero) ---
+st.title("Departamentos 33.10")
+st.markdown("<div style='text-align: center; color: #555; margin-bottom: 20px;'><b>Puebla, Pue.</b> | 33 Oriente #10</div>", unsafe_allow_html=True)
 
-# --- CORRECCIÓN IMPORTANTE DE RUTAS ---
+
+# --- IMAGEN DE FACHADA (Ahora va debajo del título) ---
+
 # Nombre del archivo de imagen
 image_file = "imagen_2025-12-07_194253899.png"
 
-# Intenta cargar la imagen buscando en varias rutas posibles
-# 1. Ruta relativa a la carpeta del script (lo más seguro)
+# Lógica de rutas (igual que antes para evitar errores)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 path_local = os.path.join(current_dir, image_file)
-
-# 2. Ruta relativa desde la raíz del repositorio (usando 'Stream' con mayúscula)
 path_repo = f"Stream/{image_file}"
 
-# Determinamos cuál es la ruta válida antes de mostrarla
 valid_image_path = None
-
 if os.path.exists(path_local):
     valid_image_path = path_local
 elif os.path.exists(path_repo):
     valid_image_path = path_repo
-elif os.path.exists(image_file): # Intento final en la raíz
+elif os.path.exists(image_file):
     valid_image_path = image_file
 
-# MOSTRAR IMAGEN (Con ajuste de tamaño)
+# Mostrar imagen centrada con columnas
 if valid_image_path:
-    # TRUCO: Usamos 3 columnas para centrar y reducir la imagen visualmente
-    # [1, 2, 1] significa: Espacio | IMAGEN (mitad de ancho) | Espacio
-    # Si quieres que sea más grande, cambia a [1, 4, 1]
-    col_izq, col_centro, col_der = st.columns([1, 2, 1])
-    
+    # Ajustamos columnas para que la imagen no ocupe todo el ancho exageradamente
+    col_izq, col_centro, col_der = st.columns([0.5, 3, 0.5]) 
     with col_centro:
         st.image(valid_image_path, use_container_width=True)
 else:
     st.error("⚠️ No se encuentra la imagen.")
-    # Mensaje de depuración para ver dónde está buscando el sistema
-    st.caption(f"Buscando en: {os.getcwd()}")
-    st.caption(f"Carpeta Stream: {os.path.exists('Stream')}")
-    st.image("https://placehold.co/800x450/f3f4f6/9ca3af/png?text=IMAGEN+NO+ENCONTRADA", use_container_width=True)
+    st.image("https://placehold.co/800x500/e0e0e0/999999/png?text=VISTA+FACHADA", use_container_width=True)
 
-st.title("Departamentos 33.10")
-st.markdown("**Puebla, Pue.** | 33 Oriente #10")
 
-# Precio estilo Badge
-st.markdown('<div class="price-tag">$2,940,000.00</div>', unsafe_allow_html=True)
+# --- PRECIO DESTACADO ---
+st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,940,000.00</div></div>', unsafe_allow_html=True)
 
 st.write("---")
 
@@ -130,6 +127,7 @@ st.write("---")
 st.subheader("📍 Ubicación Estratégica")
 st.markdown("Todo lo que necesitas a menos de 15 minutos.")
 
+# Usamos contenedores para darle fondo blanco a las métricas (opcional visualmente)
 col1, col2, col3 = st.columns(3)
 with col1:
     st.metric(label="Centro Histórico", value="5 min")
@@ -138,7 +136,6 @@ with col2:
 with col3:
     st.metric(label="Paseo Bravo", value="13 min")
 
-# Nota pequeña estilo caption
 st.caption("Cerca de: Plaza Dorada, La Noria, Parque Juárez y Prepa BUAP.")
 
 st.write("---")
@@ -146,11 +143,10 @@ st.write("---")
 # --- SECCIÓN: MODELOS ---
 st.subheader("📐 Modelos Disponibles")
 
-# Tabs limpias
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
-    st.image("https://placehold.co/600x400/f9fafb/d1d5db/png?text=Plano+Torre+A", use_container_width=True)
+    st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+A", use_container_width=True)
     st.markdown("### Modelo Inversión")
     
     c1, c2 = st.columns(2)
@@ -168,7 +164,7 @@ with tab_a:
         """)
 
 with tab_b:
-    st.image("https://placehold.co/600x400/f9fafb/d1d5db/png?text=Plano+Torre+B", use_container_width=True)
+    st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+B", use_container_width=True)
     st.markdown("### Modelo Flexibilidad")
     
     c1, c2 = st.columns(2)
@@ -213,4 +209,4 @@ st.markdown(f"""
     </a>
 """, unsafe_allow_html=True)
 
-st.markdown("<br><div style='text-align: center; color: #9CA3AF; font-size: 12px;'>Departamentos 33.10 | Diseño Arquitectónico</div>", unsafe_allow_html=True)
+st.markdown("<br><div style='text-align: center; color: #888; font-size: 12px;'>Departamentos 33.10 | Diseño Arquitectónico</div>", unsafe_allow_html=True)
