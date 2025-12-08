@@ -92,12 +92,25 @@ path_local = os.path.join(current_dir, image_file)
 # 2. Ruta relativa desde la raíz del repositorio (usando 'Stream' con mayúscula)
 path_repo = f"Stream/{image_file}"
 
+# Determinamos cuál es la ruta válida antes de mostrarla
+valid_image_path = None
+
 if os.path.exists(path_local):
-    st.image(path_local, use_container_width=True)
+    valid_image_path = path_local
 elif os.path.exists(path_repo):
-    st.image(path_repo, use_container_width=True)
+    valid_image_path = path_repo
 elif os.path.exists(image_file): # Intento final en la raíz
-    st.image(image_file, use_container_width=True)
+    valid_image_path = image_file
+
+# MOSTRAR IMAGEN (Con ajuste de tamaño)
+if valid_image_path:
+    # TRUCO: Usamos 3 columnas para centrar y reducir la imagen visualmente
+    # [1, 2, 1] significa: Espacio | IMAGEN (mitad de ancho) | Espacio
+    # Si quieres que sea más grande, cambia a [1, 4, 1]
+    col_izq, col_centro, col_der = st.columns([1, 2, 1])
+    
+    with col_centro:
+        st.image(valid_image_path, use_container_width=True)
 else:
     st.error("⚠️ No se encuentra la imagen.")
     # Mensaje de depuración para ver dónde está buscando el sistema
