@@ -92,7 +92,7 @@ st.markdown("<div style='text-align: center; color: #555; margin-bottom: 20px;'>
 # --- IMAGEN DE FACHADA (Ahora va debajo del título) ---
 
 # Nombre del archivo de imagen
-image_file = "imagen_2025-12-07_200507713.png"
+image_file = "imagen_2025-12-07_194253899.png"
 
 # Lógica de rutas (igual que antes para evitar errores)
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -123,8 +123,46 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 
 st.write("---")
 
-# --- SECCIÓN: UBICACIÓN ---
+# --- SECCIÓN: UBICACIÓN (MODIFICADA CON MAPA Y LINK) ---
 st.subheader("📍 Ubicación Estratégica")
+
+# --- IMAGEN DEL MAPA ---
+map_file = "mapa.jpg" # <--- ¡RECUERDA SUBIR ESTA IMAGEN CON ESTE NOMBRE!
+path_map_local = os.path.join(current_dir, map_file)
+path_map_repo = f"Stream/{map_file}"
+
+if os.path.exists(path_map_local):
+    st.image(path_map_local, use_container_width=True)
+elif os.path.exists(path_map_repo):
+    st.image(path_map_repo, use_container_width=True)
+elif os.path.exists(map_file):
+    st.image(map_file, use_container_width=True)
+else:
+    # Fallback si olvidaste subir el mapa
+    st.image("https://placehold.co/800x600/e0e0e0/999999/png?text=MAPA+DE+UBICACION", use_container_width=True)
+
+# --- BOTÓN DE GOOGLE MAPS ---
+# Link directo a la búsqueda de la dirección
+google_maps_url = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
+
+st.markdown(f"""
+    <div style="text-align: center; margin: 20px 0;">
+        <a href="{google_maps_url}" target="_blank" style="text-decoration: none;">
+            <button style="
+                background-color: #4285F4; 
+                color: white; 
+                border: none; 
+                padding: 12px 24px; 
+                border-radius: 50px; 
+                font-weight: bold; 
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                📍 Ver en Google Maps
+            </button>
+        </a>
+    </div>
+""", unsafe_allow_html=True)
+
 st.markdown("Todo lo que necesitas a menos de 15 minutos.")
 
 # Usamos contenedores para darle fondo blanco a las métricas (opcional visualmente)
