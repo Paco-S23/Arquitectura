@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(
@@ -11,7 +12,7 @@ st.set_page_config(
 # --- ESTILOS PERSONALIZADOS (MODO CLARO MINIMALISTA) ---
 st.markdown("""
 <style>
-    /* 1. Forzar Fondo Blanco Puro y Texto Oscuro (Resuelve el problema de visibilidad) */
+    /* 1. Forzar Fondo Blanco Puro y Texto Oscuro */
     .stApp, div[data-testid="stAppViewContainer"] {
         background-color: #ffffff !important;
         color: #000000 !important;
@@ -22,10 +23,10 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* 2. Tipografía Limpia (Estilo React) */
+    /* 2. Tipografía Limpia */
     h1 {
         font-family: 'Helvetica', sans-serif; 
-        color: #111827 !important; /* Gris muy oscuro */
+        color: #111827 !important; 
         font-weight: 800; 
         text-transform: uppercase;
         font-size: 2.2rem;
@@ -33,23 +34,23 @@ st.markdown("""
     }
     h2 {color: #374151 !important; font-weight: 400;}
     h3 {color: #111827 !important; font-weight: 600;}
-    p, li, .stMarkdown {color: #4B5563 !important;} /* Texto gris medio para lectura */
+    p, li, .stMarkdown {color: #4B5563 !important;}
     
-    /* 3. Etiqueta de Precio (Estilo Badge) */
+    /* 3. Etiqueta de Precio */
     .price-tag {
         background-color: #f3f4f6;
         color: #111827;
         padding: 8px 16px;
         font-size: 1.2rem;
         font-weight: 700;
-        border-radius: 99px; /* Redondeado completo */
+        border-radius: 99px;
         border: 1px solid #e5e7eb;
         display: inline-block;
         margin-top: 10px;
         margin-bottom: 20px;
     }
 
-    /* 4. Tarjetas de Métricas (Ubicación) */
+    /* 4. Tarjetas de Métricas */
     div[data-testid="stMetricValue"] {
         color: #111827 !important;
     }
@@ -57,10 +58,10 @@ st.markdown("""
         color: #6B7280 !important;
     }
 
-    /* 5. Botones (Estilo Moderno y Limpio) */
+    /* 5. Botones */
     .stButton>button {
         width: 100%;
-        background-color: #111827; /* Casi negro */
+        background-color: #111827;
         color: white !important;
         border-radius: 8px;
         border: none;
@@ -69,20 +70,31 @@ st.markdown("""
         transition: all 0.2s;
     }
     .stButton>button:hover {
-        background-color: #374151; /* Gris oscuro al pasar mouse */
+        background-color: #374151;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
     
-    /* Separadores sutiles */
-    hr {
-        border-color: #f3f4f6;
-    }
+    hr { border-color: #f3f4f6; }
 </style>
 """, unsafe_allow_html=True)
 
 # --- CABECERA (HERO) ---
-# Usamos columnas para centrar un poco la imagen si es muy ancha
-st.image("https://placehold.co/800x450/f3f4f6/9ca3af/png?text=RENDER+FACHADA", use_container_width=True)
+
+# Lógica para cargar la imagen localmente o usar fallback si no existe
+# Esto evita que la app se rompa si olvidas subir la imagen
+image_path = "stream/imagen_2025-12-07_194253899.png"
+# Nota: Si pruebas esto en local (no en Cloud), la ruta podría ser solo el nombre del archivo dependiendo de dónde corras el comando.
+# Streamlit Cloud corre desde la raíz del repo, por eso "stream/..."
+
+if os.path.exists(image_path):
+    st.image(image_path, use_container_width=True)
+else:
+    # Intenta buscar en la raíz por si acaso
+    if os.path.exists("imagen_2025-12-07_194253899.png"):
+        st.image("imagen_2025-12-07_194253899.png", use_container_width=True)
+    else:
+        st.error("⚠️ No se encontró la imagen. Asegúrate de que 'imagen_2025-12-07_194253899.png' esté en la carpeta 'stream' en GitHub.")
+        st.image("https://placehold.co/800x450/f3f4f6/9ca3af/png?text=SUBE+TU+IMAGEN+AL+REPO", use_container_width=True)
 
 st.title("Departamentos 33.10")
 st.markdown("**Puebla, Pue.** | 33 Oriente #10")
