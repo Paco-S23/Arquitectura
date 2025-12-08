@@ -141,7 +141,7 @@ st.markdown(f"""
                 padding: 10px 20px; 
                 border-radius: 50px; 
                 font-weight: bold; 
-                font-size: 14px;
+                font-size: 12px;
                 cursor: pointer;
                 box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 📍 Ver en Google Maps
