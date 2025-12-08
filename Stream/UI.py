@@ -119,17 +119,15 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 
 st.write("---")
 
-# --- SECCIÓN: UBICACIÓN (MAPA REDUCIDO) ---
+# --- SECCIÓN: UBICACIÓN (TAMAÑO RESTAURADO) ---
 st.subheader("📍 Ubicación Estratégica")
 
 # Mapa
 map_file = "imagen_2025-12-07_201722511.png"
 valid_map_path = load_image(map_file, "MAPA+UBICACION")
 
-# REDUCCIÓN DE TAMAÑO: Usamos columnas [1, 3, 1] para que ocupe aprox el 60% del ancho
-c_map_L, c_map_C, c_map_R = st.columns([1, 3, 1])
-with c_map_C:
-    st.image(valid_map_path, use_container_width=True)
+# AHORA EL MAPA USA TODO EL ANCHO DISPONIBLE (Sin columnas que lo reduzcan)
+st.image(valid_map_path, use_container_width=True)
 
 # Botón Maps
 google_maps_url = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
@@ -166,20 +164,15 @@ st.caption("Cerca de: Plaza Dorada, La Noria, Parque Juárez y Prepa BUAP.")
 
 st.write("---")
 
-# --- SECCIÓN: MODELOS ---
+# --- SECCIÓN: MODELOS (SIN BOCETOS) ---
 st.subheader("📐 Modelos Disponibles")
 
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
     st.markdown("### Modelo Inversión")
-    # PLANO ORIGINAL
+    # PLANO ORIGINAL ÚNICAMENTE
     st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+A", use_container_width=True)
-    
-    # BOCETO DE RECÁMARA (NUEVO)
-    # Sube tu imagen como 'recamara_a.png' o cambia el nombre aquí
-    img_recamara_a = load_image("recamara_a.png", "BOCETO+RECAMARA+A")
-    st.image(img_recamara_a, caption="Proyección de Recámara Principal", use_container_width=True)
     
     st.write("") # Espacio
     
@@ -199,14 +192,9 @@ with tab_a:
 
 with tab_b:
     st.markdown("### Modelo Flexibilidad")
-    # PLANO ORIGINAL
+    # PLANO ORIGINAL ÚNICAMENTE
     st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+B", use_container_width=True)
     
-    # BOCETO DE RECÁMARA (NUEVO)
-    # Sube tu imagen como 'recamara_b.png' o cambia el nombre aquí
-    img_recamara_b = load_image("recamara_b.png", "BOCETO+RECAMARA+B")
-    st.image(img_recamara_b, caption="Proyección de Espacios Amplios", use_container_width=True)
-
     st.write("") # Espacio
 
     c1, c2 = st.columns(2)
