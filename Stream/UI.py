@@ -170,7 +170,7 @@ st.subheader("📐 Modelos Disponibles")
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
-    st.markdown("### Modelo Inversión")
+    st.markdown("### Modelo A")
     # PLANO ORIGINAL ÚNICAMENTE
     st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+A", use_container_width=True)
     
@@ -191,7 +191,7 @@ with tab_a:
         """)
 
 with tab_b:
-    st.markdown("### Modelo Flexibilidad")
+    st.markdown("### Modelo B")
     # PLANO ORIGINAL ÚNICAMENTE
     st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+B", use_container_width=True)
     
