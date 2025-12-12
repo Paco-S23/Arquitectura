@@ -1,5 +1,7 @@
 import streamlit as st
 import os
+import base64
+import streamlit.components.v1 as components
 
 # --- CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(
@@ -63,7 +65,7 @@ st.markdown("""
         font-size: 0.9rem !important;
     }
     
-    /* 5. Botones */
+    /* 5. Botones Generales */
     .stButton>button {
         width: 100%;
         background-color: #111827;
@@ -81,18 +83,12 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     
-    /* Estilos para los botones del carrusel (más pequeños) */
-    .stButton.carousel-btn>button {
-        padding: 5px 10px !important;
-        font-size: 20px !important;
-    }
-
     hr { border-color: #e0e0e0; margin: 30px 0; }
 </style>
 """, unsafe_allow_html=True)
 
 # --- FUNCIÓN DE AYUDA PARA CARGAR IMÁGENES ---
-def load_image(filename, fallback_text="IMAGEN"):
+def get_valid_path(filename):
     """Busca la imagen en local o en la carpeta Stream y devuelve la ruta válida."""
     current_dir = os.path.dirname(os.path.abspath(__file__))
     path_local = os.path.join(current_dir, filename)
@@ -105,7 +101,23 @@ def load_image(filename, fallback_text="IMAGEN"):
     elif os.path.exists(filename):
         return filename
     else:
-        return f"https://placehold.co/800x500/e0e0e0/999999/png?text={fallback_text}"
+        return None
+
+def load_image_for_st(filename, fallback_text="IMAGEN"):
+    """Para st.image (imágenes estáticas)"""
+    path = get_valid_path(filename)
+    if path:
+        return path
+    return f"https://placehold.co/800x500/e0e0e0/999999/png?text={fallback_text}"
+
+# --- NUEVA FUNCIÓN PARA EL CARRUSEL ---
+def get_base64_image(filename):
+    """Convierte la imagen a Base64 para usarla en el HTML del carrusel."""
+    path = get_valid_path(filename)
+    if path:
+        with open(path, "rb") as img_file:
+            return f"data:image/jpeg;base64,{base64.b64encode(img_file.read()).decode()}"
+    return "https://placehold.co/800x500/e0e0e0/999999/png?text=Imagen+No+Encontrada"
 
 # --- TÍTULO PRINCIPAL ---
 st.title("Departamentos 33.10")
@@ -114,7 +126,7 @@ st.markdown("<div style='text-align: center; color: #555; margin-bottom: 20px;'>
 
 # --- IMAGEN DE FACHADA ---
 image_file = "imagen_2025-12-07_200507713.png"
-valid_image_path = load_image(image_file, "VISTA+FACHADA")
+valid_image_path = load_image_for_st(image_file, "VISTA+FACHADA")
 
 col_izq, col_centro, col_der = st.columns([0.5, 3, 0.5]) 
 with col_centro:
@@ -127,14 +139,11 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 st.write("---")
 
 # --- SECCIÓN: UBICACIÓN ---
-# Mapa
 map_file = "imagen_2025-12-07_202017772.png" 
-valid_map_path = load_image(map_file, "MAPA+UBICACION")
+valid_map_path = load_image_for_st(map_file, "MAPA+UBICACION")
 
-# EL MAPA USA TODO EL ANCHO DISPONIBLE
 st.image(valid_map_path, use_container_width=True)
 
-# Botón Maps
 google_maps_url = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
 st.markdown(f"""
     <div style="text-align: center; margin: 10px 0 20px 0;">
@@ -176,7 +185,7 @@ tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
     st.markdown("### Modelo A")
-    img_torre_a = load_image("imagen_2025-12-12_171537244.png", "PLANO+TORRE+A")
+    img_torre_a = load_image_for_st("imagen_2025-12-12_171537244.png", "PLANO+TORRE+A")
     st.image(img_torre_a, use_container_width=True)
     
     st.write("") 
@@ -197,7 +206,7 @@ with tab_a:
 
 with tab_b:
     st.markdown("### Modelo B")
-    img_torre_b = load_image("imagen_2025-12-12_170832401.png", "PLANO+TORRE+B")
+    img_torre_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO+TORRE+B")
     st.image(img_torre_b, use_container_width=True)
     
     st.write("") 
@@ -218,50 +227,167 @@ with tab_b:
 
 st.write("---")
 
-# --- NUEVA SECCIÓN: GALERÍA INTERACTIVA (CARRUSEL) ---
+# --- SECCIÓN: GALERÍA DE FOTOS (HTML/JS CARRUSEL) ---
 st.subheader("📸 Galería Fotográfica")
 st.write("Descubre cada detalle de tu próximo hogar.")
 
-# Lógica del Carrusel
-if 'gallery_index' not in st.session_state:
-    st.session_state.gallery_index = 0
+# 1. Preparamos las imágenes en Base64 para que el HTML pueda leerlas
+img1_b64 = get_base64_image("Foto1.jpg") # Cocina
+img4_b64 = get_base64_image("Foto4.jpg") # Fachada blanca
+img2_b64 = get_base64_image("Foto2.jpg") # Cielo/Edificio azul
+img3_b64 = get_base64_image("Foto3.jpg") # Interior vertical
 
-# Lista de imágenes (Asegúrate de subirlas con estos nombres)
-gallery_images = ["Foto1.jpg", "Foto4.jpg", "Foto2.jpg", "Foto3.jpg"]
-gallery_captions = [
-    "Cocina Integral con Acabados de Lujo", 
-    "Fachada Moderna y Exclusiva", 
-    "Vistas Panorámicas", 
-    "Diseño Arquitectónico de Vanguardia"
-]
+# 2. Código HTML/CSS/JS del Carrusel
+#    - autoplay de 4000ms (4 segundos)
+#    - botones transparentes superpuestos
+carousel_html = f"""
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {{box-sizing: border-box}}
+body {{font-family: Helvetica, sans-serif; margin:0}}
+.mySlides {{display: none; transition: opacity 1s ease-in-out;}}
+img {{vertical-align: middle; width: 100%; border-radius: 10px; object-fit: cover; height: 500px;}}
 
-# Controles de navegación
-col_prev, col_display, col_next = st.columns([1, 8, 1])
+/* Contenedor principal */
+.slideshow-container {{
+  max-width: 100%;
+  position: relative;
+  margin: auto;
+}}
 
-with col_prev:
-    st.write("") # Espaciador vertical para centrar botón
-    st.write("") 
-    st.write("")
-    if st.button("◀", key="prev_btn"):
-        st.session_state.gallery_index = (st.session_state.gallery_index - 1) % len(gallery_images)
+/* Botones Siguiente y Anterior */
+.prev, .next {{
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background-color: transparent; /* Fondo transparente por defecto */
+  text-shadow: 0px 0px 5px rgba(0,0,0,0.7); /* Sombra al texto para que se vea en fondos blancos */
+}}
 
-with col_next:
-    st.write("") # Espaciador vertical
-    st.write("")
-    st.write("")
-    if st.button("▶", key="next_btn"):
-        st.session_state.gallery_index = (st.session_state.gallery_index + 1) % len(gallery_images)
+/* Posición del botón derecho */
+.next {{
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}}
 
-with col_display:
-    # Mostrar imagen actual
-    current_img_name = gallery_images[st.session_state.gallery_index]
-    current_caption = gallery_captions[st.session_state.gallery_index]
-    
-    # Cargamos la imagen
-    img_path = load_image(current_img_name, "GALERIA")
-    
-    st.image(img_path, caption=f"{st.session_state.gallery_index + 1}/{len(gallery_images)} - {current_caption}", use_container_width=True)
+/* Efecto Hover sutil */
+.prev:hover, .next:hover {{
+  background-color: rgba(0,0,0,0.1); /* Ligeramente oscuro al pasar el mouse */
+}}
 
+/* Texto del Caption */
+.text {{
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}}
+
+/* Animación Fade */
+.fade {{
+  animation-name: fade;
+  animation-duration: 1.5s;
+}}
+
+@keyframes fade {{
+  from {{opacity: .4}} 
+  to {{opacity: 1}}
+}}
+</style>
+</head>
+<body>
+
+<div class="slideshow-container">
+
+<div class="mySlides fade">
+  <img src="{img1_b64}">
+  <div class="text">Cocina Integral con Acabados de Lujo</div>
+</div>
+
+<div class="mySlides fade">
+  <img src="{img4_b64}">
+  <div class="text">Fachada Moderna y Exclusiva</div>
+</div>
+
+<div class="mySlides fade">
+  <img src="{img2_b64}">
+  <div class="text">Vistas Panorámicas</div>
+</div>
+
+<div class="mySlides fade">
+  <img src="{img3_b64}">
+  <div class="text">Diseño Arquitectónico de Vanguardia</div>
+</div>
+
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+</div>
+
+<script>
+let slideIndex = 1;
+let slideInterval;
+
+showSlides(slideIndex);
+startAutoPlay(); // Inicia el movimiento automático
+
+// Controles manuales
+function plusSlides(n) {{
+  showSlides(slideIndex += n);
+  resetTimer(); // Reinicia el contador si el usuario toca un botón
+}}
+
+function currentSlide(n) {{
+  showSlides(slideIndex = n);
+  resetTimer();
+}}
+
+function showSlides(n) {{
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {{slideIndex = 1}}    
+  if (n < 1) {{slideIndex = slides.length}}
+  for (i = 0; i < slides.length; i++) {{
+    slides[i].style.display = "none";  
+  }}
+  slides[slideIndex-1].style.display = "block";  
+}}
+
+function startAutoPlay() {{
+    slideInterval = setInterval(function() {{
+        plusSlides(1);
+    }}, 4000); // 4000ms = 4 segundos
+}}
+
+function resetTimer() {{
+    clearInterval(slideInterval);
+    startAutoPlay();
+}}
+</script>
+
+</body>
+</html>
+"""
+
+# 3. Renderizar el componente
+components.html(carousel_html, height=520)
 
 st.write("---")
 
