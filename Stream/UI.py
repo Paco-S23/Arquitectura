@@ -56,10 +56,11 @@ st.markdown("""
     /* 4. Métricas */
     div[data-testid="stMetricValue"] {
         color: #111827 !important;
-        font-size: 1.5rem !important;
+        font-size: 1.3rem !important; /* Ajuste ligero para nombres largos */
     }
     div[data-testid="stMetricLabel"] {
         color: #666666 !important;
+        font-size: 0.9rem !important;
     }
     
     /* 5. Botones */
@@ -119,14 +120,13 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 
 st.write("---")
 
-# --- SECCIÓN: UBICACIÓN (ARREGLADA) ---
-# Se eliminó el st.subheader redundante ya que la imagen tiene el título "Ubicación"
+# --- SECCIÓN: UBICACIÓN (ACTUALIZADA) ---
 
 # Mapa
-map_file = "imagen_2025-12-07_202017772.png"
+map_file = "imagen_2025-12-07_202017772.png" # Nombre actualizado según tu código
 valid_map_path = load_image(map_file, "MAPA+UBICACION")
 
-# EL MAPA USA TODO EL ANCHO DISPONIBLE (Sin columnas)
+# EL MAPA USA TODO EL ANCHO DISPONIBLE
 st.image(valid_map_path, use_container_width=True)
 
 # Botón Maps
@@ -152,15 +152,16 @@ st.markdown(f"""
 
 st.markdown("Todo lo que necesitas a menos de 15 minutos.")
 
+# --- CAMBIO DE ZONAS SOLICITADO ---
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.metric(label="Centro Histórico", value="5 min")
+    st.metric(label="Facultad Medicina BUAP", value="5 min")
 with col2:
-    st.metric(label="Parque Ninfas", value="8 min")
+    st.metric(label="Plaza Dorada", value="3 min")
 with col3:
-    st.metric(label="Paseo Bravo", value="13 min")
+    st.metric(label="Centro Histórico", value="10 min")
 
-st.caption("Cerca de: Plaza Dorada, La Noria, Parque Juárez y Prepa BUAP.")
+st.caption("Cerca de: Parque Juárez, La Noria y Zona Universitaria.")
 
 st.write("---")
 
