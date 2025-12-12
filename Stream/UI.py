@@ -56,7 +56,7 @@ st.markdown("""
     /* 4. Métricas */
     div[data-testid="stMetricValue"] {
         color: #111827 !important;
-        font-size: 1.3rem !important; /* Ajuste ligero para nombres largos */
+        font-size: 1.3rem !important;
     }
     div[data-testid="stMetricLabel"] {
         color: #666666 !important;
@@ -120,10 +120,9 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 
 st.write("---")
 
-# --- SECCIÓN: UBICACIÓN (ACTUALIZADA) ---
-
+# --- SECCIÓN: UBICACIÓN ---
 # Mapa
-map_file = "imagen_2025-12-07_202017772.png" # Nombre actualizado según tu código
+map_file = "imagen_2025-12-07_202017772.png" 
 valid_map_path = load_image(map_file, "MAPA+UBICACION")
 
 # EL MAPA USA TODO EL ANCHO DISPONIBLE
@@ -152,7 +151,6 @@ st.markdown(f"""
 
 st.markdown("Todo lo que necesitas a menos de 15 minutos.")
 
-# --- CAMBIO DE ZONAS SOLICITADO ---
 col1, col2, col3 = st.columns(3)
 with col1:
     st.metric(label="Facultad Medicina BUAP", value="5 min")
@@ -165,15 +163,16 @@ st.caption("Cerca de: Parque Juárez, La Noria y Zona Universitaria.")
 
 st.write("---")
 
-# --- SECCIÓN: MODELOS (SIN BOCETOS) ---
+# --- SECCIÓN: MODELOS (IMÁGENES NUEVAS) ---
 st.subheader("📐 Modelos Disponibles")
 
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
     st.markdown("### Modelo A")
-    # PLANO ORIGINAL ÚNICAMENTE
-    st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+A", use_container_width=True)
+    # IMAGEN TORRE A (La más reciente)
+    img_torre_a = load_image("imagen_2025-12-12_171537244.png", "PLANO+TORRE+A")
+    st.image(img_torre_a, use_container_width=True)
     
     st.write("") # Espacio
     
@@ -193,8 +192,9 @@ with tab_a:
 
 with tab_b:
     st.markdown("### Modelo B")
-    # PLANO ORIGINAL ÚNICAMENTE
-    st.image("https://placehold.co/600x400/e5e5e5/a0a0a0/png?text=Plano+Torre+B", use_container_width=True)
+    # IMAGEN TORRE B (La que tiene más tiempo de las nuevas)
+    img_torre_b = load_image("imagen_2025-12-12_170832401.png", "PLANO+TORRE+B")
+    st.image(img_torre_b, use_container_width=True)
     
     st.write("") # Espacio
 
