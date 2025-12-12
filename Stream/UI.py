@@ -81,6 +81,12 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     
+    /* Estilos para los botones del carrusel (más pequeños) */
+    .stButton.carousel-btn>button {
+        padding: 5px 10px !important;
+        font-size: 20px !important;
+    }
+
     hr { border-color: #e0e0e0; margin: 30px 0; }
 </style>
 """, unsafe_allow_html=True)
@@ -163,18 +169,17 @@ st.caption("Cerca de: Parque Juárez, La Noria y Zona Universitaria.")
 
 st.write("---")
 
-# --- SECCIÓN: MODELOS (IMÁGENES NUEVAS) ---
+# --- SECCIÓN: MODELOS ---
 st.subheader("📐 Modelos Disponibles")
 
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
     st.markdown("### Modelo A")
-    # IMAGEN TORRE A (La más reciente)
     img_torre_a = load_image("imagen_2025-12-12_171537244.png", "PLANO+TORRE+A")
     st.image(img_torre_a, use_container_width=True)
     
-    st.write("") # Espacio
+    st.write("") 
     
     c1, c2 = st.columns(2)
     with c1:
@@ -192,11 +197,10 @@ with tab_a:
 
 with tab_b:
     st.markdown("### Modelo B")
-    # IMAGEN TORRE B (La que tiene más tiempo de las nuevas)
     img_torre_b = load_image("imagen_2025-12-12_170832401.png", "PLANO+TORRE+B")
     st.image(img_torre_b, use_container_width=True)
     
-    st.write("") # Espacio
+    st.write("") 
 
     c1, c2 = st.columns(2)
     with c1:
@@ -214,22 +218,50 @@ with tab_b:
 
 st.write("---")
 
-# --- NUEVA SECCIÓN: GALERÍA DE DECORACIÓN ---
-st.subheader("✨ Estilo y Acabados")
-st.write("Una muestra de la atmósfera que podrás disfrutar.")
+# --- NUEVA SECCIÓN: GALERÍA INTERACTIVA (CARRUSEL) ---
+st.subheader("📸 Galería Fotográfica")
+st.write("Descubre cada detalle de tu próximo hogar.")
 
-# Sube tus imágenes como 'decoracion_1.png', 'decoracion_2.png', etc.
-col_d1, col_d2 = st.columns(2)
-with col_d1:
-    img_deco1 = load_image("decoracion_1.png", "DECORACION+1")
-    st.image(img_deco1, use_container_width=True)
-with col_d2:
-    img_deco2 = load_image("decoracion_2.png", "DECORACION+2")
-    st.image(img_deco2, use_container_width=True)
+# Lógica del Carrusel
+if 'gallery_index' not in st.session_state:
+    st.session_state.gallery_index = 0
 
-# Tercera imagen centrada más grande
-img_deco3 = load_image("decoracion_3.png", "DECORACION+3")
-st.image(img_deco3, use_container_width=True)
+# Lista de imágenes (Asegúrate de subirlas con estos nombres)
+gallery_images = ["Foto1.jpg", "Foto4.jpg", "Foto2.jpg", "Foto3.jpg"]
+gallery_captions = [
+    "Cocina Integral con Acabados de Lujo", 
+    "Fachada Moderna y Exclusiva", 
+    "Vistas Panorámicas", 
+    "Diseño Arquitectónico de Vanguardia"
+]
+
+# Controles de navegación
+col_prev, col_display, col_next = st.columns([1, 8, 1])
+
+with col_prev:
+    st.write("") # Espaciador vertical para centrar botón
+    st.write("") 
+    st.write("")
+    if st.button("◀", key="prev_btn"):
+        st.session_state.gallery_index = (st.session_state.gallery_index - 1) % len(gallery_images)
+
+with col_next:
+    st.write("") # Espaciador vertical
+    st.write("")
+    st.write("")
+    if st.button("▶", key="next_btn"):
+        st.session_state.gallery_index = (st.session_state.gallery_index + 1) % len(gallery_images)
+
+with col_display:
+    # Mostrar imagen actual
+    current_img_name = gallery_images[st.session_state.gallery_index]
+    current_caption = gallery_captions[st.session_state.gallery_index]
+    
+    # Cargamos la imagen
+    img_path = load_image(current_img_name, "GALERIA")
+    
+    st.image(img_path, caption=f"{st.session_state.gallery_index + 1}/{len(gallery_images)} - {current_caption}", use_container_width=True)
+
 
 st.write("---")
 
