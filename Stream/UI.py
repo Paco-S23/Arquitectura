@@ -11,21 +11,41 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- ESTILOS PERSONALIZADOS ---
+# --- ESTILOS PERSONALIZADOS (MODO LIMPIO TOTAL) ---
 st.markdown("""
 <style>
-    /* Fondo y Colores Generales */
+    /* 1. Fondo y Colores Generales */
     .stApp, div[data-testid="stAppViewContainer"] {
         background-color: #f8f9fa !important;
         color: #212529 !important;
     }
     
-    /* --- OCULTAR MARCAS DE STREAMLIT (NUEVO) --- */
-    #MainMenu {visibility: hidden;} /* Oculta menú de hamburguesa */
-    footer {visibility: hidden;}    /* Oculta footer "Made with Streamlit" */
-    header {visibility: hidden;}    /* Oculta header superior */
-    div[data-testid="stToolbar"] {visibility: hidden;} /* Oculta barra de herramientas */
-    .stDeployButton {display:none;} /* Oculta botón Deploy si eres admin */
+    /* 2. OCULTAR TODA LA INTERFAZ DE STREAMLIT (CSS AGRESIVO) */
+    
+    /* Oculta el menú de hamburguesa (arriba derecha) */
+    #MainMenu {visibility: hidden; display: none !important;}
+    
+    /* Oculta el pie de página "Made with Streamlit" */
+    footer {visibility: hidden; display: none !important;}
+    
+    /* Oculta la barra de colores superior (Header) */
+    header {visibility: hidden; display: none !important;}
+    
+    /* Oculta la barra de herramientas del desarrollador (donde sale tu foto y "Hosted with") */
+    [data-testid="stToolbar"] {visibility: hidden; display: none !important;}
+    
+    /* Oculta decoraciones extra */
+    [data-testid="stDecoration"] {visibility: hidden; display: none !important;}
+    [data-testid="stStatusWidget"] {visibility: hidden; display: none !important;}
+    .stDeployButton {display: none !important;}
+    
+    /* Ajuste para subir el contenido ya que quitamos el header */
+    .block-container {
+        padding-top: 1rem !important; /* Reduce el espacio vacío arriba */
+        padding-bottom: 0rem !important;
+    }
+
+    /* 3. Estilos del Flyer */
     
     /* Tipografía */
     h1 {
@@ -54,7 +74,7 @@ st.markdown("""
         box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
-    /* MENSAJE DE URGENCIA (ROJO PULSANTE) */
+    /* Mensaje de Urgencia */
     .urgency-box {
         background-color: #ffebee;
         color: #c62828;
@@ -110,7 +130,6 @@ st.markdown("""
 
 # --- FUNCIONES DE UTILIDAD ---
 def get_valid_path(filename):
-    """Busca la imagen ignorando mayúsculas/minúsculas y en varias carpetas."""
     base_dirs = ["", "Stream", "stream"]
     name, ext = os.path.splitext(filename)
     variations = [
@@ -120,9 +139,7 @@ def get_valid_path(filename):
         f"{name.lower()}{ext.lower()}",
         f"{name.capitalize()}{ext.lower()}"
     ]
-    
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    
     for base in base_dirs:
         for variant in variations:
             if os.path.exists(os.path.join(base, variant)):
@@ -145,17 +162,18 @@ def get_base64_image(filename):
             return f"data:image/jpeg;base64,{base64.b64encode(img_file.read()).decode()}"
     return "https://placehold.co/800x500/e9ecef/6c757d/png?text=Cargando..."
 
-# --- ENCABEZADO ---
+# --- CONTENIDO ---
+
 st.title("Departamentos 33.10")
 st.markdown("<div style='text-align: center; color: #6c757d; margin-bottom: 20px; font-weight: 500;'>33 Oriente #10, Puebla, Pue.</div>", unsafe_allow_html=True)
 
-# Imagen Principal (Fachada Original)
+# Portada
 hero_image = load_image_for_st("imagen_2025-12-07_200507713.png", "FACHADA PRINCIPAL") 
 col_L, col_C, col_R = st.columns([0.1, 4, 0.1])
 with col_C:
     st.image(hero_image, use_container_width=True)
 
-# Precio + Mensaje de Urgencia
+# Precio y Urgencia
 st.markdown("""
     <div style="text-align: center;">
         <div class="price-tag">Desde $2,940,000.00</div>
@@ -165,12 +183,10 @@ st.markdown("""
 
 st.write("---")
 
-# --- UBICACIÓN ---
-# Mapa original
+# Ubicación
 map_path = load_image_for_st("imagen_2025-12-07_202017772.png", "MAPA UBICACION")
 st.image(map_path, use_container_width=True)
 
-# Botón Maps
 link_maps = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
 st.markdown(f"""
     <div style="text-align: center; margin-top: 15px; margin-bottom: 25px;">
@@ -182,65 +198,45 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# Tiempos de Recorrido
+# Tiempos
 c1, c2, c3 = st.columns(3)
 with c1:
-    st.markdown("""
-    <div class="time-card">
-        <div class="time-val">5 min</div>
-        <div class="time-label">Medicina BUAP</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="time-card"><div class="time-val">5 min</div><div class="time-label">Medicina BUAP</div></div>', unsafe_allow_html=True)
 with c2:
-    st.markdown("""
-    <div class="time-card">
-        <div class="time-val">3 min</div>
-        <div class="time-label">Plaza Dorada</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="time-card"><div class="time-val">3 min</div><div class="time-label">Plaza Dorada</div></div>', unsafe_allow_html=True)
 with c3:
-    st.markdown("""
-    <div class="time-card">
-        <div class="time-val">10 min</div>
-        <div class="time-label">Centro Histórico</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="time-card"><div class="time-val">10 min</div><div class="time-label">Centro Histórico</div></div>', unsafe_allow_html=True)
 
 st.markdown("<div style='text-align:center; color:#888; font-size:0.8rem; margin-top:5px;'>Cerca de: Parque Juárez, La Noria y Zona Universitaria.</div>", unsafe_allow_html=True)
 
 st.write("---")
 
-# --- MODELOS ---
+# Modelos
 st.subheader("📐 Modelos Disponibles")
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
     st.markdown("##### 🏢 Modelo A")
-    # Plano original Torre A
     img_modelo_a = load_image_for_st("imagen_2025-12-12_171537244.png", "PLANO TORRE A")
     st.image(img_modelo_a, use_container_width=True)
-    
-    col_info1, col_info2 = st.columns(2)
-    col_info1.markdown("- **89 m²** Totales\n- 2 Recámaras\n- 2 Baños")
-    col_info2.markdown("- Terraza\n- 2 Cajones\n- Paneles Solares")
+    c1, c2 = st.columns(2)
+    c1.markdown("- **89 m²** Totales\n- 2 Recámaras\n- 2 Baños")
+    c2.markdown("- Terraza\n- 2 Cajones\n- Paneles Solares")
 
 with tab_b:
     st.markdown("##### 🏢 Modelo B")
-    # Plano original Torre B
     img_modelo_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO TORRE B")
     st.image(img_modelo_b, use_container_width=True)
-    
-    col_info1, col_info2 = st.columns(2)
-    col_info1.markdown("- **96 m²** Totales\n- 2 Recámaras\n- 2 Baños")
-    col_info2.markdown("- **Opción 3ª Recámara**\n- 2 Cajones\n- Bodega")
+    c1, c2 = st.columns(2)
+    c1.markdown("- **96 m²** Totales\n- 2 Recámaras\n- 2 Baños")
+    c2.markdown("- **Opción 3ª Recámara**\n- 2 Cajones\n- Bodega")
 
 st.write("---")
 
-# --- GALERÍA CARRUSEL (11 FOTOS) ---
+# Galería
 st.subheader("📸 Galería del Proyecto")
 st.write("Descubre cada detalle de tu próximo hogar.")
 
-# Lista de imágenes
 carousel_data = [
     {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
     {"file": "Foto1.jpg", "caption": "Cocina Integral Equipada"},
@@ -255,18 +251,11 @@ carousel_data = [
     {"file": "foto10.jpg", "caption": "Estructura Sólida y Diseño Urbano"}
 ]
 
-# Generar HTML de Slides
 slides_markup = ""
 for item in carousel_data:
     b64 = get_base64_image(item["file"])
-    slides_markup += f"""
-    <div class="mySlides fade">
-        <img src="{b64}" style="width:100%">
-        <div class="text">{item["caption"]}</div>
-    </div>
-    """
+    slides_markup += f"""<div class="mySlides fade"><img src="{b64}" style="width:100%"><div class="text">{item["caption"]}</div></div>"""
 
-# HTML/JS del Carrusel
 html_code = f"""
 <!DOCTYPE html>
 <html>
@@ -277,116 +266,44 @@ html_code = f"""
 body {{font-family: sans-serif; margin: 0;}}
 .mySlides {{display: none;}}
 img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; border-radius: 12px;}}
-
-/* Contenedor */
-.slideshow-container {{
-  max-width: 100%;
-  position: relative;
-  margin: auto;
-}}
-
-/* Botones */
-.prev, .next {{
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  width: auto;
-  padding: 16px;
-  margin-top: -22px;
-  color: white;
-  font-weight: bold;
-  font-size: 24px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-  background-color: rgba(0,0,0,0.2);
-  text-shadow: 1px 1px 2px black;
-}}
-.next {{
-  right: 0;
-  border-radius: 3px 0 0 3px;
-}}
-.prev:hover, .next:hover {{
-  background-color: rgba(0,0,0,0.7);
-}}
-
-/* Caption */
-.text {{
-  color: #f2f2f2;
-  font-size: 16px;
-  padding: 12px;
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  text-align: center;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  font-family: 'Helvetica', sans-serif;
-  letter-spacing: 0.5px;
-}}
-
+.slideshow-container {{max-width: 100%; position: relative; margin: auto;}}
+.prev, .next {{cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -22px; color: white; font-weight: bold; font-size: 24px; transition: 0.6s ease; border-radius: 0 3px 3px 0; user-select: none; background-color: rgba(0,0,0,0.2); text-shadow: 1px 1px 2px black;}}
+.next {{right: 0; border-radius: 3px 0 0 3px;}}
+.prev:hover, .next:hover {{background-color: rgba(0,0,0,0.7);}}
+.text {{color: #f2f2f2; font-size: 16px; padding: 12px; position: absolute; bottom: 0px; width: 100%; text-align: center; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; font-family: 'Helvetica', sans-serif; letter-spacing: 0.5px;}}
 .fade {{animation-name: fade; animation-duration: 1.5s;}}
 @keyframes fade {{from {{opacity: .4}} to {{opacity: 1}}}}
 </style>
 </head>
 <body>
-
 <div class="slideshow-container">
 {slides_markup}
 <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
 <a class="next" onclick="plusSlides(1)">&#10095;</a>
 </div>
-
 <script>
 let slideIndex = 1;
 let timer;
 showSlides(slideIndex);
-
 timer = setInterval(function() {{ plusSlides(1); }}, 4000);
-
-function plusSlides(n) {{
-  clearInterval(timer); 
-  timer = setInterval(function() {{ plusSlides(1); }}, 4000);
-  showSlides(slideIndex += n);
-}}
-
-function showSlides(n) {{
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  if (n > slides.length) {{slideIndex = 1}}    
-  if (n < 1) {{slideIndex = slides.length}}
-  for (i = 0; i < slides.length; i++) {{
-    slides[i].style.display = "none";  
-  }}
-  slides[slideIndex-1].style.display = "block";  
-}}
+function plusSlides(n) {{ clearInterval(timer); timer = setInterval(function() {{ plusSlides(1); }}, 4000); showSlides(slideIndex += n); }}
+function showSlides(n) {{ let i; let slides = document.getElementsByClassName("mySlides"); if (n > slides.length) {{slideIndex = 1}} if (n < 1) {{slideIndex = slides.length}} for (i = 0; i < slides.length; i++) {{ slides[i].style.display = "none"; }} slides[slideIndex-1].style.display = "block"; }}
 </script>
-
 </body>
 </html>
 """
-
 components.html(html_code, height=460)
 
 st.write("---")
 
-# --- CONTACTO ---
+# Contacto
 st.subheader("¿Te interesa invertir?")
 st.write("Agenda una visita hoy mismo.")
-
 phone = "522221256530"
 link_wa = f"https://wa.me/{phone}?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20Deptos%2033.10"
+st.markdown(f"""<a href="{link_wa}" target="_blank" style="text-decoration: none;"><button style="width: 100%; background-color: #25D366; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;"><span>📲</span> Contactar por WhatsApp</button></a>""", unsafe_allow_html=True)
 
-st.markdown(f"""
-<a href="{link_wa}" target="_blank" style="text-decoration: none;">
-    <button style="width: 100%; background-color: #25D366; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
-        <span>📲</span> Contactar por WhatsApp
-    </button>
-</a>
-""", unsafe_allow_html=True)
-
-# Footer limpio sin marca de agua
+# Footer limpio
 st.markdown("<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>", unsafe_allow_html=True)
 
 
