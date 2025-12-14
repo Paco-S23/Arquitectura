@@ -76,7 +76,7 @@ st.markdown("""
 # --- FUNCIONES DE UTILIDAD ---
 def get_valid_path(filename):
     """Busca la imagen en local o en la carpeta Stream intentando varias combinaciones."""
-    # Lista de posibles rutas y variaciones de nombre (mayúscula/minúscula)
+    # Lista de posibles rutas y variaciones de nombre
     nombres_a_probar = [filename, filename.capitalize(), filename.lower()]
     
     base_dirs = [
@@ -111,8 +111,8 @@ def get_base64_image(filename):
 st.title("Departamentos 33.10")
 st.markdown("<div style='text-align: center; color: #6c757d; margin-bottom: 20px; font-weight: 500;'>33 Oriente #10, Puebla, Pue.</div>", unsafe_allow_html=True)
 
-# Imagen Principal: Usamos la foto11 (Fachada nueva)
-hero_image = load_image_for_st("foto11.jpg", "FACHADA PRINCIPAL") 
+# Imagen Principal (RESTAURADA a la original que subiste al principio)
+hero_image = load_image_for_st("imagen_2025-12-07_200507713.png", "FACHADA PRINCIPAL") 
 col_L, col_C, col_R = st.columns([0.2, 4, 0.2])
 with col_C:
     st.image(hero_image, use_container_width=True)
@@ -122,7 +122,7 @@ st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,94
 st.write("---")
 
 # --- UBICACIÓN ---
-# Usamos el mapa que ya tenías
+# Mapa original
 map_path = load_image_for_st("imagen_2025-12-07_202017772.png", "MAPA UBICACION")
 st.image(map_path, use_container_width=True)
 
@@ -151,8 +151,8 @@ tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
     st.markdown("##### 🏢 Modelo A")
-    # Intentamos usar el plano A si existe, si no, usa la Foto1 (Cocina) como referencia
-    img_modelo_a = load_image_for_st("Foto1.jpg", "MODELO A")
+    # Imagen de plano original (RESTAURADA)
+    img_modelo_a = load_image_for_st("imagen_2025-12-12_171537244.png", "PLANO TORRE A")
     st.image(img_modelo_a, use_container_width=True)
     c1, c2 = st.columns(2)
     c1.markdown("- 89 m²\n- 2 Recámaras\n- 2 Baños")
@@ -160,8 +160,8 @@ with tab_a:
 
 with tab_b:
     st.markdown("##### 🏢 Modelo B")
-    # Usamos Foto6 (Estancia) como referencia para el B
-    img_modelo_b = load_image_for_st("foto6.jpg", "MODELO B")
+    # Imagen de plano original (RESTAURADA)
+    img_modelo_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO TORRE B")
     st.image(img_modelo_b, use_container_width=True)
     c1, c2 = st.columns(2)
     c1.markdown("- 96 m²\n- 2 Recámaras\n- 2 Baños")
@@ -173,8 +173,7 @@ st.write("---")
 st.subheader("📸 Galería del Proyecto")
 st.write("Descubre cada detalle de tu próximo hogar.")
 
-# LISTA DE IMÁGENES EXACTA (Nombres originales)
-# El sistema buscará 'Foto1.jpg', 'foto1.jpg', etc.
+# LISTA DE IMÁGENES EXACTA (Nombres originales que subiste)
 carousel_data = [
     {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
     {"file": "Foto1.jpg", "caption": "Cocina Integral Equipada"},
