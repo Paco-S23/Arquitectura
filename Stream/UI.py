@@ -20,11 +20,13 @@ st.markdown("""
         color: #212529 !important;
     }
     
-    /* Ocultar elementos de Streamlit */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-
+    /* --- OCULTAR MARCAS DE STREAMLIT (NUEVO) --- */
+    #MainMenu {visibility: hidden;} /* Oculta menú de hamburguesa */
+    footer {visibility: hidden;}    /* Oculta footer "Made with Streamlit" */
+    header {visibility: hidden;}    /* Oculta header superior */
+    div[data-testid="stToolbar"] {visibility: hidden;} /* Oculta barra de herramientas */
+    .stDeployButton {display:none;} /* Oculta botón Deploy si eres admin */
+    
     /* Tipografía */
     h1 {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
@@ -72,7 +74,7 @@ st.markdown("""
         100% { transform: scale(1); }
     }
 
-    /* Tarjetas de Tiempo (Reemplazo de Metrics) */
+    /* Tarjetas de Tiempo */
     .time-card {
         background-color: white;
         border: 1px solid #e0e0e0;
@@ -106,11 +108,10 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- FUNCIONES DE UTILIDAD (Búsqueda robusta de archivos) ---
+# --- FUNCIONES DE UTILIDAD ---
 def get_valid_path(filename):
     """Busca la imagen ignorando mayúsculas/minúsculas y en varias carpetas."""
     base_dirs = ["", "Stream", "stream"]
-    # Generar variaciones del nombre (Foto1.jpg, foto1.jpg, FOTO1.JPG)
     name, ext = os.path.splitext(filename)
     variations = [
         filename, 
@@ -124,14 +125,11 @@ def get_valid_path(filename):
     
     for base in base_dirs:
         for variant in variations:
-            # Probar ruta relativa directa
             if os.path.exists(os.path.join(base, variant)):
                 return os.path.join(base, variant)
-            # Probar ruta absoluta desde el script
             full_path = os.path.join(current_dir, base, variant)
             if os.path.exists(full_path):
                 return full_path
-                
     return None
 
 def load_image_for_st(filename, fallback_text="IMAGEN"):
@@ -184,8 +182,7 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# --- TIEMPOS DE RECORRIDO (AQUÍ ESTÁ LA CORRECCIÓN VISUAL) ---
-# Usamos HTML directo para asegurar que se vean sí o sí
+# Tiempos de Recorrido
 c1, c2, c3 = st.columns(3)
 with c1:
     st.markdown("""
@@ -243,7 +240,7 @@ st.write("---")
 st.subheader("📸 Galería del Proyecto")
 st.write("Descubre cada detalle de tu próximo hogar.")
 
-# Lista de imágenes (Nombres originales)
+# Lista de imágenes
 carousel_data = [
     {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
     {"file": "Foto1.jpg", "caption": "Cocina Integral Equipada"},
@@ -389,4 +386,7 @@ st.markdown(f"""
 </a>
 """, unsafe_allow_html=True)
 
+# Footer limpio sin marca de agua
 st.markdown("<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>", unsafe_allow_html=True)
+
+
