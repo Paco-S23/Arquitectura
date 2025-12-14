@@ -48,27 +48,42 @@ st.markdown("""
         font-weight: 700;
         border-radius: 50px;
         display: inline-block;
-        margin-top: 20px;
-        margin-bottom: 5px; /* Reducido para acercarlo al mensaje de urgencia */
+        margin-top: 10px;
         box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
-    /* MENSAJE DE URGENCIA (NUEVO) */
-    .urgency-msg {
-        color: #d32f2f; /* Rojo elegante */
+    /* MENSAJE DE URGENCIA (ROJO PULSANTE) */
+    .urgency-box {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
         font-weight: 800;
-        font-size: 1.1rem;
         text-transform: uppercase;
-        margin-bottom: 25px;
-        letter-spacing: 1px;
+        margin: 15px 0;
         animation: pulse 2s infinite;
     }
-
+    
     @keyframes pulse {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.05); opacity: 0.8; }
-        100% { transform: scale(1); opacity: 1; }
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
     }
+
+    /* Tarjetas de Tiempo (Reemplazo de Metrics) */
+    .time-card {
+        background-color: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        margin-bottom: 10px;
+    }
+    .time-val { font-size: 1.5rem; font-weight: bold; color: #111827; }
+    .time-label { font-size: 0.85rem; color: #666; text-transform: uppercase; margin-top: 5px; }
 
     /* Botones */
     .stButton>button {
@@ -91,25 +106,32 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- FUNCIONES DE UTILIDAD ---
+# --- FUNCIONES DE UTILIDAD (Búsqueda robusta de archivos) ---
 def get_valid_path(filename):
-    """Busca la imagen en local o en la carpeta Stream intentando varias combinaciones."""
-    # Lista de posibles rutas y variaciones de nombre
-    nombres_a_probar = [filename, filename.capitalize(), filename.lower()]
-    
-    base_dirs = [
-        "", # Directorio actual
-        "Stream/", # Carpeta Stream
-        "stream/", # Carpeta stream (minúscula)
-        os.path.dirname(__file__),
-        os.path.join(os.path.dirname(__file__), "Stream")
+    """Busca la imagen ignorando mayúsculas/minúsculas y en varias carpetas."""
+    base_dirs = ["", "Stream", "stream"]
+    # Generar variaciones del nombre (Foto1.jpg, foto1.jpg, FOTO1.JPG)
+    name, ext = os.path.splitext(filename)
+    variations = [
+        filename, 
+        filename.lower(), 
+        filename.capitalize(),
+        f"{name.lower()}{ext.lower()}",
+        f"{name.capitalize()}{ext.lower()}"
     ]
-
+    
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
     for base in base_dirs:
-        for nombre in nombres_a_probar:
-            ruta_completa = os.path.join(base, nombre)
-            if os.path.exists(ruta_completa):
-                return ruta_completa
+        for variant in variations:
+            # Probar ruta relativa directa
+            if os.path.exists(os.path.join(base, variant)):
+                return os.path.join(base, variant)
+            # Probar ruta absoluta desde el script
+            full_path = os.path.join(current_dir, base, variant)
+            if os.path.exists(full_path):
+                return full_path
+                
     return None
 
 def load_image_for_st(filename, fallback_text="IMAGEN"):
@@ -129,9 +151,9 @@ def get_base64_image(filename):
 st.title("Departamentos 33.10")
 st.markdown("<div style='text-align: center; color: #6c757d; margin-bottom: 20px; font-weight: 500;'>33 Oriente #10, Puebla, Pue.</div>", unsafe_allow_html=True)
 
-# Imagen Principal (Original)
+# Imagen Principal (Fachada Original)
 hero_image = load_image_for_st("imagen_2025-12-07_200507713.png", "FACHADA PRINCIPAL") 
-col_L, col_C, col_R = st.columns([0.2, 4, 0.2])
+col_L, col_C, col_R = st.columns([0.1, 4, 0.1])
 with col_C:
     st.image(hero_image, use_container_width=True)
 
@@ -139,7 +161,7 @@ with col_C:
 st.markdown("""
     <div style="text-align: center;">
         <div class="price-tag">Desde $2,940,000.00</div>
-        <div class="urgency-msg">🔥 ¡Solo quedan 3 disponibles! 🔥</div>
+        <div class="urgency-box">🔥 ¡Solo quedan 3 disponibles! 🔥</div>
     </div>
 """, unsafe_allow_html=True)
 
@@ -150,9 +172,10 @@ st.write("---")
 map_path = load_image_for_st("imagen_2025-12-07_202017772.png", "MAPA UBICACION")
 st.image(map_path, use_container_width=True)
 
+# Botón Maps
 link_maps = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
 st.markdown(f"""
-    <div style="text-align: center; margin-top: 15px;">
+    <div style="text-align: center; margin-top: 15px; margin-bottom: 25px;">
         <a href="{link_maps}" target="_blank" style="text-decoration: none;">
             <button style="background-color: #0d6efd; color: white; border: none; padding: 10px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 📍 Ver en Google Maps
@@ -161,11 +184,32 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-st.write("")
-col1, col2, col3 = st.columns(3)
-col1.metric("Medicina BUAP", "5 min")
-col2.metric("Plaza Dorada", "3 min")
-col3.metric("Centro Histórico", "10 min")
+# --- TIEMPOS DE RECORRIDO (AQUÍ ESTÁ LA CORRECCIÓN VISUAL) ---
+# Usamos HTML directo para asegurar que se vean sí o sí
+c1, c2, c3 = st.columns(3)
+with c1:
+    st.markdown("""
+    <div class="time-card">
+        <div class="time-val">5 min</div>
+        <div class="time-label">Medicina BUAP</div>
+    </div>
+    """, unsafe_allow_html=True)
+with c2:
+    st.markdown("""
+    <div class="time-card">
+        <div class="time-val">3 min</div>
+        <div class="time-label">Plaza Dorada</div>
+    </div>
+    """, unsafe_allow_html=True)
+with c3:
+    st.markdown("""
+    <div class="time-card">
+        <div class="time-val">10 min</div>
+        <div class="time-label">Centro Histórico</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("<div style='text-align:center; color:#888; font-size:0.8rem; margin-top:5px;'>Cerca de: Parque Juárez, La Noria y Zona Universitaria.</div>", unsafe_allow_html=True)
 
 st.write("---")
 
@@ -175,36 +219,38 @@ tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
     st.markdown("##### 🏢 Modelo A")
-    # Imagen de plano original
+    # Plano original Torre A
     img_modelo_a = load_image_for_st("imagen_2025-12-12_171537244.png", "PLANO TORRE A")
     st.image(img_modelo_a, use_container_width=True)
-    c1, c2 = st.columns(2)
-    c1.markdown("- 89 m²\n- 2 Recámaras\n- 2 Baños")
-    c2.markdown("- Terraza\n- 2 Cajones\n- Paneles Solares")
+    
+    col_info1, col_info2 = st.columns(2)
+    col_info1.markdown("- **89 m²** Totales\n- 2 Recámaras\n- 2 Baños")
+    col_info2.markdown("- Terraza\n- 2 Cajones\n- Paneles Solares")
 
 with tab_b:
     st.markdown("##### 🏢 Modelo B")
-    # Imagen de plano original
+    # Plano original Torre B
     img_modelo_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO TORRE B")
     st.image(img_modelo_b, use_container_width=True)
-    c1, c2 = st.columns(2)
-    c1.markdown("- 96 m²\n- 2 Recámaras\n- 2 Baños")
-    c2.markdown("- **Opción 3ª Recámara**\n- 2 Cajones\n- Bodega")
+    
+    col_info1, col_info2 = st.columns(2)
+    col_info1.markdown("- **96 m²** Totales\n- 2 Recámaras\n- 2 Baños")
+    col_info2.markdown("- **Opción 3ª Recámara**\n- 2 Cajones\n- Bodega")
 
 st.write("---")
 
-# --- GALERÍA CARRUSEL (AUTOMÁTICA) ---
+# --- GALERÍA CARRUSEL (11 FOTOS) ---
 st.subheader("📸 Galería del Proyecto")
 st.write("Descubre cada detalle de tu próximo hogar.")
 
-# LISTA DE IMÁGENES EXACTA
+# Lista de imágenes (Nombres originales)
 carousel_data = [
     {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
     {"file": "Foto1.jpg", "caption": "Cocina Integral Equipada"},
     {"file": "Foto2.jpg", "caption": "Vistas Exteriores y Cielo Azul"},
     {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
-    {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminados"},
+    {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminadas"},
     {"file": "foto6.jpg", "caption": "Espacios de Sala-Comedor"},
     {"file": "foto7.jpg", "caption": "Área de Servicio y Calentador"},
     {"file": "foto8.jpg", "caption": "Estacionamiento y Jardineras de Bambú"},
@@ -223,7 +269,7 @@ for item in carousel_data:
     </div>
     """
 
-# Componente HTML/JS Completo
+# HTML/JS del Carrusel
 html_code = f"""
 <!DOCTYPE html>
 <html>
@@ -242,7 +288,7 @@ img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; bor
   margin: auto;
 }}
 
-/* Botones Next/Prev - Transparentes sobre la imagen */
+/* Botones */
 .prev, .next {{
   cursor: pointer;
   position: absolute;
@@ -256,7 +302,7 @@ img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; bor
   transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0,0,0,0.2);
   text-shadow: 1px 1px 2px black;
 }}
 .next {{
@@ -264,10 +310,10 @@ img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; bor
   border-radius: 3px 0 0 3px;
 }}
 .prev:hover, .next:hover {{
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.7);
 }}
 
-/* Texto Caption */
+/* Caption */
 .text {{
   color: #f2f2f2;
   font-size: 16px;
@@ -283,7 +329,6 @@ img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; bor
   letter-spacing: 0.5px;
 }}
 
-/* Animación */
 .fade {{animation-name: fade; animation-duration: 1.5s;}}
 @keyframes fade {{from {{opacity: .4}} to {{opacity: 1}}}}
 </style>
@@ -301,11 +346,10 @@ let slideIndex = 1;
 let timer;
 showSlides(slideIndex);
 
-// Auto-play cada 4 segundos
 timer = setInterval(function() {{ plusSlides(1); }}, 4000);
 
 function plusSlides(n) {{
-  clearInterval(timer); // Reinicia el timer al hacer click manual
+  clearInterval(timer); 
   timer = setInterval(function() {{ plusSlides(1); }}, 4000);
   showSlides(slideIndex += n);
 }}
@@ -346,5 +390,3 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 st.markdown("<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>", unsafe_allow_html=True)
-
-
