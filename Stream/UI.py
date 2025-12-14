@@ -41,15 +41,33 @@ st.markdown("""
     
     /* Etiqueta de Precio */
     .price-tag {
-        background-color: #212529;
+        background-color: #2b2b2b;
         color: #ffffff;
         padding: 12px 30px;
         font-size: 1.4rem;
         font-weight: 700;
         border-radius: 50px;
         display: inline-block;
-        margin: 20px 0;
+        margin-top: 20px;
+        margin-bottom: 5px; /* Reducido para acercarlo al mensaje de urgencia */
         box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    /* MENSAJE DE URGENCIA (NUEVO) */
+    .urgency-msg {
+        color: #d32f2f; /* Rojo elegante */
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
     }
 
     /* Botones */
@@ -111,13 +129,19 @@ def get_base64_image(filename):
 st.title("Departamentos 33.10")
 st.markdown("<div style='text-align: center; color: #6c757d; margin-bottom: 20px; font-weight: 500;'>33 Oriente #10, Puebla, Pue.</div>", unsafe_allow_html=True)
 
-# Imagen Principal (RESTAURADA a la original que subiste al principio)
+# Imagen Principal (Original)
 hero_image = load_image_for_st("imagen_2025-12-07_200507713.png", "FACHADA PRINCIPAL") 
 col_L, col_C, col_R = st.columns([0.2, 4, 0.2])
 with col_C:
     st.image(hero_image, use_container_width=True)
 
-st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,940,000.00</div></div>', unsafe_allow_html=True)
+# Precio + Mensaje de Urgencia
+st.markdown("""
+    <div style="text-align: center;">
+        <div class="price-tag">Desde $2,940,000.00</div>
+        <div class="urgency-msg">🔥 ¡Solo quedan 3 disponibles! 🔥</div>
+    </div>
+""", unsafe_allow_html=True)
 
 st.write("---")
 
@@ -151,7 +175,7 @@ tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
     st.markdown("##### 🏢 Modelo A")
-    # Imagen de plano original (RESTAURADA)
+    # Imagen de plano original
     img_modelo_a = load_image_for_st("imagen_2025-12-12_171537244.png", "PLANO TORRE A")
     st.image(img_modelo_a, use_container_width=True)
     c1, c2 = st.columns(2)
@@ -160,7 +184,7 @@ with tab_a:
 
 with tab_b:
     st.markdown("##### 🏢 Modelo B")
-    # Imagen de plano original (RESTAURADA)
+    # Imagen de plano original
     img_modelo_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO TORRE B")
     st.image(img_modelo_b, use_container_width=True)
     c1, c2 = st.columns(2)
@@ -173,16 +197,16 @@ st.write("---")
 st.subheader("📸 Galería del Proyecto")
 st.write("Descubre cada detalle de tu próximo hogar.")
 
-# LISTA DE IMÁGENES EXACTA (Nombres originales que subiste)
+# LISTA DE IMÁGENES EXACTA
 carousel_data = [
     {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
     {"file": "Foto1.jpg", "caption": "Cocina Integral Equipada"},
     {"file": "Foto2.jpg", "caption": "Vistas Exteriores y Cielo Azul"},
     {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
-    {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminadas"},
+    {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminados"},
     {"file": "foto6.jpg", "caption": "Espacios de Sala-Comedor"},
-    {"file": "foto7.jpg", "caption": "Área de Servicio"},
+    {"file": "foto7.jpg", "caption": "Área de Servicio y Calentador"},
     {"file": "foto8.jpg", "caption": "Estacionamiento y Jardineras de Bambú"},
     {"file": "foto9.jpg", "caption": "Detalles de Fachada Lateral"},
     {"file": "foto10.jpg", "caption": "Estructura Sólida y Diseño Urbano"}
@@ -232,7 +256,7 @@ img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; bor
   transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
-  background-color: rgba(0,0,0,0.1); /* Muy sutil */
+  background-color: rgba(0,0,0,0.1);
   text-shadow: 1px 1px 2px black;
 }}
 .next {{
@@ -322,3 +346,5 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 st.markdown("<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>", unsafe_allow_html=True)
+
+
