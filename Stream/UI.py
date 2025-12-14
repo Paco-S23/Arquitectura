@@ -11,13 +11,13 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- ESTILOS PERSONALIZADOS (MODO ARQUITECTÓNICO) ---
+# --- ESTILOS PERSONALIZADOS ---
 st.markdown("""
 <style>
-    /* 1. Fondo Gris Suave */
+    /* Fondo y Colores Generales */
     .stApp, div[data-testid="stAppViewContainer"] {
-        background-color: #f5f5f5 !important;
-        color: #1a1a1a !important;
+        background-color: #f8f9fa !important;
+        color: #212529 !important;
     }
     
     /* Ocultar elementos de Streamlit */
@@ -25,239 +25,201 @@ st.markdown("""
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* 2. Tipografía */
+    /* Tipografía */
     h1 {
-        font-family: 'Helvetica', sans-serif; 
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
         color: #111827 !important; 
         font-weight: 800; 
         text-transform: uppercase;
-        font-size: 2.5rem;
-        margin-top: 0px;
-        margin-bottom: 10px;
+        font-size: 2.2rem;
         text-align: center;
+        margin-bottom: 0.5rem;
     }
     
-    h2 {color: #374151 !important; font-weight: 400;}
-    h3 {color: #111827 !important; font-weight: 600;}
-    p, li, .stMarkdown {color: #444444 !important;}
+    h2, h3 {color: #343a40 !important;}
+    p {color: #495057 !important;}
     
-    /* 3. Etiqueta de Precio */
+    /* Etiqueta de Precio */
     .price-tag {
-        background-color: #2b2b2b;
+        background-color: #212529;
         color: #ffffff;
-        padding: 10px 25px;
-        font-size: 1.3rem;
-        font-weight: 600;
-        border-radius: 8px;
+        padding: 12px 30px;
+        font-size: 1.4rem;
+        font-weight: 700;
+        border-radius: 50px;
         display: inline-block;
-        margin-top: 15px;
-        margin-bottom: 25px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        margin: 20px 0;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
-    /* 4. Métricas */
-    div[data-testid="stMetricValue"] {
-        color: #111827 !important;
-        font-size: 1.3rem !important;
-    }
-    div[data-testid="stMetricLabel"] {
-        color: #666666 !important;
-        font-size: 0.9rem !important;
-    }
-    
-    /* 5. Botones Generales */
+    /* Botones */
     .stButton>button {
         width: 100%;
         background-color: #111827;
         color: white !important;
-        border-radius: 6px;
+        border-radius: 8px;
         border: none;
         padding: 16px;
         font-weight: 600;
-        letter-spacing: 0.5px;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
     }
     .stButton>button:hover {
-        background-color: #333333;
+        background-color: #333;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
-    hr { border-color: #e0e0e0; margin: 30px 0; }
+    hr { border-color: #dee2e6; margin: 40px 0; }
 </style>
 """, unsafe_allow_html=True)
 
-# --- FUNCIÓN DE AYUDA PARA CARGAR IMÁGENES ---
+# --- FUNCIONES DE UTILIDAD ---
 def get_valid_path(filename):
-    """Busca la imagen en local o en la carpeta Stream y devuelve la ruta válida."""
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    path_local = os.path.join(current_dir, filename)
-    path_repo = f"Stream/{filename}"
+    """Busca la imagen en local o en la carpeta Stream intentando varias combinaciones."""
+    # Lista de posibles rutas y variaciones de nombre (mayúscula/minúscula)
+    nombres_a_probar = [filename, filename.capitalize(), filename.lower()]
     
-    if os.path.exists(path_local):
-        return path_local
-    elif os.path.exists(path_repo):
-        return path_repo
-    elif os.path.exists(filename):
-        return filename
-    else:
-        return None
+    base_dirs = [
+        "", # Directorio actual
+        "Stream/", # Carpeta Stream
+        "stream/", # Carpeta stream (minúscula)
+        os.path.dirname(__file__),
+        os.path.join(os.path.dirname(__file__), "Stream")
+    ]
+
+    for base in base_dirs:
+        for nombre in nombres_a_probar:
+            ruta_completa = os.path.join(base, nombre)
+            if os.path.exists(ruta_completa):
+                return ruta_completa
+    return None
 
 def load_image_for_st(filename, fallback_text="IMAGEN"):
-    """Para st.image (imágenes estáticas)"""
     path = get_valid_path(filename)
     if path:
         return path
-    return f"https://placehold.co/800x500/e0e0e0/999999/png?text={fallback_text}"
+    return f"https://placehold.co/800x500/e9ecef/6c757d/png?text={fallback_text}"
 
-# --- NUEVA FUNCIÓN PARA EL CARRUSEL ---
 def get_base64_image(filename):
-    """Convierte la imagen a Base64 para usarla en el HTML del carrusel."""
     path = get_valid_path(filename)
     if path:
         with open(path, "rb") as img_file:
             return f"data:image/jpeg;base64,{base64.b64encode(img_file.read()).decode()}"
-    return "https://placehold.co/800x500/e0e0e0/999999/png?text=Imagen+No+Encontrada"
+    return "https://placehold.co/800x500/e9ecef/6c757d/png?text=Cargando..."
 
-# --- TÍTULO PRINCIPAL ---
+# --- ENCABEZADO ---
 st.title("Departamentos 33.10")
-st.markdown("<div style='text-align: center; color: #555; margin-bottom: 20px;'><b>Puebla, Pue.</b> | 33 Oriente #10</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center; color: #6c757d; margin-bottom: 20px; font-weight: 500;'>33 Oriente #10, Puebla, Pue.</div>", unsafe_allow_html=True)
 
+# Imagen Principal: Usamos la foto11 (Fachada nueva)
+hero_image = load_image_for_st("foto11.jpg", "FACHADA PRINCIPAL") 
+col_L, col_C, col_R = st.columns([0.2, 4, 0.2])
+with col_C:
+    st.image(hero_image, use_container_width=True)
 
-# --- IMAGEN DE FACHADA ---
-image_file = "imagen_2025-12-07_200507713.png"
-valid_image_path = load_image_for_st(image_file, "VISTA+FACHADA")
-
-col_izq, col_centro, col_der = st.columns([0.5, 3, 0.5]) 
-with col_centro:
-    st.image(valid_image_path, use_container_width=True)
-
-
-# --- PRECIO DESTACADO ---
 st.markdown('<div style="text-align: center;"><div class="price-tag">Desde $2,940,000.00</div></div>', unsafe_allow_html=True)
 
 st.write("---")
 
-# --- SECCIÓN: UBICACIÓN ---
-map_file = "imagen_2025-12-07_202017772.png" 
-valid_map_path = load_image_for_st(map_file, "MAPA+UBICACION")
+# --- UBICACIÓN ---
+# Usamos el mapa que ya tenías
+map_path = load_image_for_st("imagen_2025-12-07_202017772.png", "MAPA UBICACION")
+st.image(map_path, use_container_width=True)
 
-st.image(valid_map_path, use_container_width=True)
-
-google_maps_url = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
+link_maps = "https://www.google.com/maps/search/?api=1&query=33+Oriente+10+Puebla+Pue"
 st.markdown(f"""
-    <div style="text-align: center; margin: 10px 0 20px 0;">
-        <a href="{google_maps_url}" target="_blank" style="text-decoration: none;">
-            <button style="
-                background-color: #4285F4; 
-                color: white; 
-                border: none; 
-                padding: 10px 20px; 
-                border-radius: 50px; 
-                font-weight: bold; 
-                font-size: 14px;
-                cursor: pointer;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <div style="text-align: center; margin-top: 15px;">
+        <a href="{link_maps}" target="_blank" style="text-decoration: none;">
+            <button style="background-color: #0d6efd; color: white; border: none; padding: 10px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 📍 Ver en Google Maps
             </button>
         </a>
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown("Todo lo que necesitas a menos de 15 minutos.")
-
+st.write("")
 col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric(label="Facultad Medicina BUAP", value="5 min")
-with col2:
-    st.metric(label="Plaza Dorada", value="3 min")
-with col3:
-    st.metric(label="Centro Histórico", value="10 min")
-
-st.caption("Cerca de: Parque Juárez, La Noria y Zona Universitaria.")
+col1.metric("Medicina BUAP", "5 min")
+col2.metric("Plaza Dorada", "3 min")
+col3.metric("Centro Histórico", "10 min")
 
 st.write("---")
 
-# --- SECCIÓN: MODELOS ---
+# --- MODELOS ---
 st.subheader("📐 Modelos Disponibles")
-
 tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
 
 with tab_a:
-    st.markdown("### Modelo A")
-    img_torre_a = load_image_for_st("imagen_2025-12-12_171537244.png", "PLANO+TORRE+A")
-    st.image(img_torre_a, use_container_width=True)
-    
-    st.write("") 
-    
+    st.markdown("##### 🏢 Modelo A")
+    # Intentamos usar el plano A si existe, si no, usa la Foto1 (Cocina) como referencia
+    img_modelo_a = load_image_for_st("Foto1.jpg", "MODELO A")
+    st.image(img_modelo_a, use_container_width=True)
     c1, c2 = st.columns(2)
-    with c1:
-        st.markdown("""
-        * **89 m²** Totales
-        * 🛏️ 2 Recámaras
-        * 🚿 2 Baños
-        """)
-    with c2:
-        st.markdown("""
-        * 🌳 Terraza
-        * 🚗 2 Cajones
-        * ☀️ Paneles Solares
-        """)
+    c1.markdown("- 89 m²\n- 2 Recámaras\n- 2 Baños")
+    c2.markdown("- Terraza\n- 2 Cajones\n- Paneles Solares")
 
 with tab_b:
-    st.markdown("### Modelo B")
-    img_torre_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO+TORRE+B")
-    st.image(img_torre_b, use_container_width=True)
-    
-    st.write("") 
-
+    st.markdown("##### 🏢 Modelo B")
+    # Usamos Foto6 (Estancia) como referencia para el B
+    img_modelo_b = load_image_for_st("foto6.jpg", "MODELO B")
+    st.image(img_modelo_b, use_container_width=True)
     c1, c2 = st.columns(2)
-    with c1:
-        st.markdown("""
-        * **96 m²** Totales
-        * 🛏️ 2 Recámaras
-        * 🚿 2 Baños
-        """)
-    with c2:
-        st.markdown("""
-        * 🛋️ **Opción 3ª Recámara**
-        * 🚗 2 Cajones
-        * 📦 Bodega
-        """)
+    c1.markdown("- 96 m²\n- 2 Recámaras\n- 2 Baños")
+    c2.markdown("- **Opción 3ª Recámara**\n- 2 Cajones\n- Bodega")
 
 st.write("---")
 
-# --- SECCIÓN: GALERÍA DE FOTOS (HTML/JS CARRUSEL) ---
-st.subheader("📸 Galería Fotográfica")
+# --- GALERÍA CARRUSEL (AUTOMÁTICA) ---
+st.subheader("📸 Galería del Proyecto")
 st.write("Descubre cada detalle de tu próximo hogar.")
 
-# 1. Preparamos las imágenes en Base64 para que el HTML pueda leerlas
-img1_b64 = get_base64_image("Foto1.jpg") # Cocina
-img4_b64 = get_base64_image("Foto4.jpg") # Fachada blanca
-img2_b64 = get_base64_image("Foto2.jpg") # Cielo/Edificio azul
-img3_b64 = get_base64_image("Foto3.jpg") # Interior vertical
+# LISTA DE IMÁGENES EXACTA (Nombres originales)
+# El sistema buscará 'Foto1.jpg', 'foto1.jpg', etc.
+carousel_data = [
+    {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
+    {"file": "Foto1.jpg", "caption": "Cocina Integral Equipada"},
+    {"file": "Foto2.jpg", "caption": "Vistas Exteriores y Cielo Azul"},
+    {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
+    {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
+    {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminadas"},
+    {"file": "foto6.jpg", "caption": "Espacios de Sala-Comedor"},
+    {"file": "foto7.jpg", "caption": "Área de Servicio y Calentador"},
+    {"file": "foto8.jpg", "caption": "Estacionamiento y Jardineras de Bambú"},
+    {"file": "foto9.jpg", "caption": "Detalles de Fachada Lateral"},
+    {"file": "foto10.jpg", "caption": "Estructura Sólida y Diseño Urbano"}
+]
 
-# 2. Código HTML/CSS/JS del Carrusel
-#    - autoplay de 4000ms (4 segundos)
-#    - botones transparentes superpuestos
-carousel_html = f"""
+# Generar HTML de Slides
+slides_markup = ""
+for item in carousel_data:
+    b64 = get_base64_image(item["file"])
+    slides_markup += f"""
+    <div class="mySlides fade">
+        <img src="{b64}" style="width:100%">
+        <div class="text">{item["caption"]}</div>
+    </div>
+    """
+
+# Componente HTML/JS Completo
+html_code = f"""
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-* {{box-sizing: border-box}}
-body {{font-family: Helvetica, sans-serif; margin:0}}
-.mySlides {{display: none; transition: opacity 1s ease-in-out;}}
-img {{vertical-align: middle; width: 100%; border-radius: 10px; object-fit: cover; height: 500px;}}
+* {{box-sizing: border-box;}}
+body {{font-family: sans-serif; margin: 0;}}
+.mySlides {{display: none;}}
+img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; border-radius: 12px;}}
 
-/* Contenedor principal */
+/* Contenedor */
 .slideshow-container {{
   max-width: 100%;
   position: relative;
   margin: auto;
 }}
 
-/* Botones Siguiente y Anterior */
+/* Botones Next/Prev - Transparentes sobre la imagen */
 .prev, .next {{
   cursor: pointer;
   position: absolute;
@@ -271,92 +233,58 @@ img {{vertical-align: middle; width: 100%; border-radius: 10px; object-fit: cove
   transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
-  background-color: transparent; /* Fondo transparente por defecto */
-  text-shadow: 0px 0px 5px rgba(0,0,0,0.7); /* Sombra al texto para que se vea en fondos blancos */
+  background-color: rgba(0,0,0,0.1); /* Muy sutil */
+  text-shadow: 1px 1px 2px black;
 }}
-
-/* Posición del botón derecho */
 .next {{
   right: 0;
   border-radius: 3px 0 0 3px;
 }}
-
-/* Efecto Hover sutil */
 .prev:hover, .next:hover {{
-  background-color: rgba(0,0,0,0.1); /* Ligeramente oscuro al pasar el mouse */
+  background-color: rgba(0,0,0,0.6);
 }}
 
-/* Texto del Caption */
+/* Texto Caption */
 .text {{
   color: #f2f2f2;
-  font-size: 15px;
-  padding: 8px 12px;
+  font-size: 16px;
+  padding: 12px;
   position: absolute;
-  bottom: 8px;
+  bottom: 0px;
   width: 100%;
   text-align: center;
-  background: rgba(0, 0, 0, 0.5);
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  font-family: 'Helvetica', sans-serif;
+  letter-spacing: 0.5px;
 }}
 
-/* Animación Fade */
-.fade {{
-  animation-name: fade;
-  animation-duration: 1.5s;
-}}
-
-@keyframes fade {{
-  from {{opacity: .4}} 
-  to {{opacity: 1}}
-}}
+/* Animación */
+.fade {{animation-name: fade; animation-duration: 1.5s;}}
+@keyframes fade {{from {{opacity: .4}} to {{opacity: 1}}}}
 </style>
 </head>
 <body>
 
 <div class="slideshow-container">
-
-<div class="mySlides fade">
-  <img src="{img1_b64}">
-  <div class="text">Cocina Integral con Acabados de Lujo</div>
-</div>
-
-<div class="mySlides fade">
-  <img src="{img4_b64}">
-  <div class="text">Fachada Moderna y Exclusiva</div>
-</div>
-
-<div class="mySlides fade">
-  <img src="{img2_b64}">
-  <div class="text">Vistas Panorámicas</div>
-</div>
-
-<div class="mySlides fade">
-  <img src="{img3_b64}">
-  <div class="text">Diseño Arquitectónico de Vanguardia</div>
-</div>
-
+{slides_markup}
 <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
 <a class="next" onclick="plusSlides(1)">&#10095;</a>
-
 </div>
 
 <script>
 let slideIndex = 1;
-let slideInterval;
-
+let timer;
 showSlides(slideIndex);
-startAutoPlay(); // Inicia el movimiento automático
 
-// Controles manuales
+// Auto-play cada 4 segundos
+timer = setInterval(function() {{ plusSlides(1); }}, 4000);
+
 function plusSlides(n) {{
+  clearInterval(timer); // Reinicia el timer al hacer click manual
+  timer = setInterval(function() {{ plusSlides(1); }}, 4000);
   showSlides(slideIndex += n);
-  resetTimer(); // Reinicia el contador si el usuario toca un botón
-}}
-
-function currentSlide(n) {{
-  showSlides(slideIndex = n);
-  resetTimer();
 }}
 
 function showSlides(n) {{
@@ -369,52 +297,29 @@ function showSlides(n) {{
   }}
   slides[slideIndex-1].style.display = "block";  
 }}
-
-function startAutoPlay() {{
-    slideInterval = setInterval(function() {{
-        plusSlides(1);
-    }}, 4000); // 4000ms = 4 segundos
-}}
-
-function resetTimer() {{
-    clearInterval(slideInterval);
-    startAutoPlay();
-}}
 </script>
 
 </body>
 </html>
 """
 
-# 3. Renderizar el componente
-components.html(carousel_html, height=520)
+components.html(html_code, height=460)
 
 st.write("---")
 
-# --- CTA WHATSAPP ---
-st.subheader("¿Te interesa?")
-st.write("Agenda tu visita al Showroom.")
+# --- CONTACTO ---
+st.subheader("¿Te interesa invertir?")
+st.write("Agenda una visita hoy mismo.")
 
-phone_number = "522221256530"
-whatsapp_url = f"https://wa.me/{phone_number}?text=Hola,%20me%20interesa%20info%20de%20Deptos%2033.10"
+phone = "522221256530"
+link_wa = f"https://wa.me/{phone}?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20Deptos%2033.10"
 
 st.markdown(f"""
-    <a href="{whatsapp_url}" target="_blank" style="text-decoration: none;">
-        <button style="
-            width: 100%;
-            background-color: #25D366; 
-            color: white; 
-            border: none; 
-            padding: 16px; 
-            border-radius: 8px; 
-            font-weight: 600; 
-            font-size: 16px; 
-            cursor: pointer;
-            transition: background-color 0.3s;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-            📲 Agendar Visita por WhatsApp
-        </button>
-    </a>
+<a href="{link_wa}" target="_blank" style="text-decoration: none;">
+    <button style="width: 100%; background-color: #25D366; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <span>📲</span> Contactar por WhatsApp
+    </button>
+</a>
 """, unsafe_allow_html=True)
 
-st.markdown("<br><div style='text-align: center; color: #888; font-size: 12px;'>Departamentos 33.10 | Diseño Arquitectónico</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>", unsafe_allow_html=True)
