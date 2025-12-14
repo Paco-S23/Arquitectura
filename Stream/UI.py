@@ -182,7 +182,7 @@ carousel_data = [
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
     {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminadas"},
     {"file": "foto6.jpg", "caption": "Espacios de Sala-Comedor"},
-    {"file": "foto7.jpg", "caption": "Área de Servicio y Calentador"},
+    {"file": "foto7.jpg", "caption": "Área de Servicio"},
     {"file": "foto8.jpg", "caption": "Estacionamiento y Jardineras de Bambú"},
     {"file": "foto9.jpg", "caption": "Detalles de Fachada Lateral"},
     {"file": "foto10.jpg", "caption": "Estructura Sólida y Diseño Urbano"}
