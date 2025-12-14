@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# --- ESTILOS PERSONALIZADOS (MODO LIMPIO TOTAL) ---
+# --- ESTILOS PERSONALIZADOS (MODO 'KIOSCO' LIMPIO) ---
 st.markdown("""
 <style>
     /* 1. Fondo y Colores Generales */
@@ -20,29 +20,43 @@ st.markdown("""
         color: #212529 !important;
     }
     
-    /* 2. OCULTAR TODA LA INTERFAZ DE STREAMLIT (CSS AGRESIVO) */
+    /* 2. OCULTAR ELEMENTOS DE INTERFAZ (GitHub, Menús, etc.) */
     
-    /* Oculta el menú de hamburguesa (arriba derecha) */
-    #MainMenu {visibility: hidden; display: none !important;}
+    /* Oculta la barra superior completa (donde sale tu foto y el menú) */
+    header[data-testid="stHeader"] {
+        visibility: hidden;
+        display: none !important;
+        height: 0px !important;
+        padding: 0px !important;
+    }
     
-    /* Oculta el pie de página "Made with Streamlit" */
-    footer {visibility: hidden; display: none !important;}
+    /* Oculta el menú de hamburguesa específicamente */
+    #MainMenu {
+        visibility: hidden;
+        display: none !important;
+    }
     
-    /* Oculta la barra de colores superior (Header) */
-    header {visibility: hidden; display: none !important;}
+    /* Oculta el footer estándar dentro de la app */
+    footer {
+        visibility: hidden;
+        display: none !important;
+    }
     
-    /* Oculta la barra de herramientas del desarrollador (donde sale tu foto y "Hosted with") */
-    [data-testid="stToolbar"] {visibility: hidden; display: none !important;}
+    /* Oculta la barra de herramientas del desarrollador */
+    div[data-testid="stToolbar"] {
+        visibility: hidden; 
+        display: none !important;
+    }
     
-    /* Oculta decoraciones extra */
-    [data-testid="stDecoration"] {visibility: hidden; display: none !important;}
-    [data-testid="stStatusWidget"] {visibility: hidden; display: none !important;}
-    .stDeployButton {display: none !important;}
+    /* Oculta el botón de 'Deploy' si llegara a aparecer */
+    .stDeployButton {
+        display: none !important;
+    }
     
-    /* Ajuste para subir el contenido ya que quitamos el header */
+    /* Ajuste para subir el contenido al tope de la pantalla */
     .block-container {
-        padding-top: 1rem !important; /* Reduce el espacio vacío arriba */
-        padding-bottom: 0rem !important;
+        padding-top: 2rem !important; /* Mínimo espacio arriba */
+        padding-bottom: 2rem !important;
     }
 
     /* 3. Estilos del Flyer */
