@@ -254,14 +254,14 @@ st.write("Descubre cada detalle de tu próximo hogar.")
 
 carousel_data = [
     {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
-    {"file": "Foto1.jpg", "caption": "Cocina Integral Equipada con barra de cuarzo"},
-    {"file": "Foto2.jpg", "caption": "Vistas Exteriores "},
+    {"file": "Foto1.jpg", "caption": "Cocina Integral Equipada con Barra de Cuarzo"},
+    {"file": "Foto2.jpg", "caption": "Vistas Exteriores"},
     {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
     {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminadas"},
     {"file": "foto6.jpg", "caption": "Espacios de Sala-Comedor"},
-    {"file": "foto7.jpg", "caption": "Área de Servicio y bodega"},
-    {"file": "foto8.jpg", "caption": "Estacionamiento para 2 autos por departamento"},
+    {"file": "foto7.jpg", "caption": "Área de Servicio y Bodega"},
+    {"file": "foto8.jpg", "caption": "Estacionamiento para 2 Autos por Departamento"},
     {"file": "foto9.jpg", "caption": "Detalles de Fachada Lateral"},
     {"file": "foto10.jpg", "caption": "Estructura Sólida y Diseño Urbano"}
 ]
