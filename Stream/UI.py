@@ -88,17 +88,18 @@ st.markdown("""
         box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
-    /* Mensaje de Urgencia */
+    /* Mensaje de Urgencia (MODIFICADO: MÁS GRANDE) */
     .urgency-box {
         background-color: #ffebee;
         color: #c62828;
         border: 1px solid #ffcdd2;
-        padding: 10px;
+        padding: 12px;
         border-radius: 8px;
         text-align: center;
         font-weight: 800;
         text-transform: uppercase;
         margin: 15px 0;
+        font-size: 1.5rem; /* Aumentado aprox un 30% */
         animation: pulse 2s infinite;
     }
     
@@ -319,5 +320,3 @@ st.markdown(f"""<a href="{link_wa}" target="_blank" style="text-decoration: none
 
 # Footer limpio
 st.markdown("<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>", unsafe_allow_html=True)
-
-
