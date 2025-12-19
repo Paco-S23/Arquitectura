@@ -190,11 +190,16 @@ with col_C:
 
 # Precio y Urgencia
 st.markdown("""
-    <div style="text-align: center;">
-        <div class="price-tag">Desde $2,940,000.00</div>
-        <div class="urgency-box">🔥 ¡Solo quedan 3 disponibles! 🔥</div>
+    <div style="text-align: center; margin-top: 20px;">
+        <div class="urgency-box">
+            🔥 Últimos 3 departamentos disponibles 🔥
+        </div>
+        <div class="price-tag" style="margin-top: 10px;">
+            Desde $2,940,000.00
+        </div>
     </div>
 """, unsafe_allow_html=True)
+
 
 st.write("---")
 
