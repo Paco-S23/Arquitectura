@@ -308,11 +308,11 @@ components.html(html_code, height=460)
 st.write("---")
 
 # Contacto
-st.subheader("¿Te interesa invertir?")
-st.write("Agenda una visita hoy mismo.")
+st.subheader("¿Te interesa?")
+st.write("Contactanos por WhatsApp")
 phone = "522221256530"
 link_wa = f"https://wa.me/{phone}?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20Deptos%2033.10"
-st.markdown(f"""<a href="{link_wa}" target="_blank" style="text-decoration: none;"><button style="width: 100%; background-color: #25D366; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;"><span>📲</span> Contactar por WhatsApp</button></a>""", unsafe_allow_html=True)
+st.markdown(f"""<a href="{link_wa}" target="_blank" style="text-decoration: none;"><button style="width: 100%; background-color: #25D366; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;"><span>📲</span> CONTACTA UN ASESOR</button></a>""", unsafe_allow_html=True)
 
 # Footer limpio
 st.markdown("<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>", unsafe_allow_html=True)
