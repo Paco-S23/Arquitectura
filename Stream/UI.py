@@ -229,8 +229,8 @@ with col_C:
 # Precio y Urgencia (ARREGLADO)
 st.markdown("""
 <div class="price-box">
-  <div class="badge">🔥 Últimos 3 departamentos disponibles</div>
-  <div class="price-pill">Desde $2,940,000.00 🔥 </div>
+  <div class="badge">Últimos 3 departamentos disponibles</div>
+  <div class="price-pill">Desde $2,940,000.00 </div>
 </div>
 """, unsafe_allow_html=True)
 
