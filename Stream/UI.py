@@ -227,16 +227,14 @@ st.markdown("<div style='text-align:center; color:#888; font-size:0.8rem; margin
 st.write("---")
 
 # Modelos
-st.subheader("📐 Modelos Disponibles")
-tab_a, tab_b = st.tabs(["Torre A (89m²)", "Torre B (96m²)"])
+st.subheader("📐 Modelos ")
+tab_a, tab_b = st.tabs(["Torre A ", "Torre B "])
 
 with tab_a:
     st.markdown("##### 🏢 Modelo A")
     img_modelo_a = load_image_for_st("imagen_2025-12-12_171537244.png", "PLANO TORRE A")
     st.image(img_modelo_a, use_container_width=True)
-    c1, c2 = st.columns(2)
-    c1.markdown("- **89 m²** Totales\n- 2 Recámaras\n- 2 Baños")
-    c2.markdown("- Terraza\n- 2 Cajones\n- Paneles Solares")
+
 
 with tab_b:
     st.markdown("##### 🏢 Modelo B")
