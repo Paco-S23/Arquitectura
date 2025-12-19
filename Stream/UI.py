@@ -241,10 +241,7 @@ with tab_a:
 with tab_b:
     st.markdown("##### 🏢 Modelo B")
     img_modelo_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO TORRE B")
-    st.image(img_modelo_b, use_container_width=True)
-    c1, c2 = st.columns(2)
-    c1.markdown("- **96 m²** Totales\n- 2 Recámaras\n- 2 Baños")
-    c2.markdown("- **Opción 3ª Recámara**\n- 2 Cajones\n- Bodega")
+    
 
 st.write("---")
 
