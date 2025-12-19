@@ -75,7 +75,7 @@ st.markdown("""
     h2, h3 {color: #343a40 !important;}
     p {color: #495057 !important;}
     
-    /* Etiqueta de Precio */
+    /* Etiqueta de Precio (NO usada ya, pero la dejo por si la usas después) */
     .price-tag {
         background-color: #2b2b2b;
         color: #ffffff;
@@ -88,7 +88,7 @@ st.markdown("""
         box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     }
 
-    /* Mensaje de Urgencia (MODIFICADO: MÁS GRANDE) */
+    /* Mensaje de Urgencia */
     .urgency-box {
         background-color: #ffebee;
         color: #c62828;
@@ -99,7 +99,7 @@ st.markdown("""
         font-weight: 800;
         text-transform: uppercase;
         margin: 15px 0;
-        font-size: 1.5rem; /* Aumentado aprox un 30% */
+        font-size: 1.5rem;
         animation: pulse 2s infinite;
     }
     
@@ -140,6 +140,46 @@ st.markdown("""
     }
     
     hr { border-color: #dee2e6; margin: 40px 0; }
+
+    /* --- Caja de precio (ARREGLADA: responsive + sin desbordes) --- */
+    .price-box{
+      background-color:#111827;
+      border-radius:14px;
+      padding:20px 22px;
+      text-align:center;
+      margin:25px auto;
+      width:100%;
+      max-width:440px;
+      box-shadow:0 15px 35px rgba(0,0,0,0.25);
+      overflow:hidden;
+      box-sizing:border-box;
+      transform-origin:center;
+      animation:pulse 2s infinite;
+    }
+    .price-box .badge{
+      color:#ffffff;
+      font-weight:900;
+      text-transform:uppercase;
+      font-size:1.35rem;
+      margin-bottom:12px;
+      letter-spacing:0.5px;
+    }
+    .price-box .price-pill{
+      background-color:#ffffff;
+      color:#111827;
+      display:inline-block;
+      padding:12px 34px;
+      border-radius:999px;
+      font-size:1.35rem;
+      font-weight:800;
+      box-shadow:0 6px 15px rgba(0,0,0,0.2);
+      white-space:nowrap;
+    }
+    @media (max-width:480px){
+      .price-box{ padding:18px 16px; }
+      .price-box .badge{ font-size:1.1rem; }
+      .price-box .price-pill{ font-size:1.15rem; padding:10px 18px; }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -178,7 +218,6 @@ def get_base64_image(filename):
     return "https://placehold.co/800x500/e9ecef/6c757d/png?text=Cargando..."
 
 # --- CONTENIDO ---
-
 st.title("Departamentos 33.10")
 st.markdown("<div style='text-align: center; color: #6c757d; margin-bottom: 20px; font-weight: 500;'>33 Oriente #10, Puebla, Pue.</div>", unsafe_allow_html=True)
 
@@ -188,45 +227,13 @@ col_L, col_C, col_R = st.columns([0.1, 4, 0.1])
 with col_C:
     st.image(hero_image, use_container_width=True)
 
-# Precio y Urgencia
+# Precio y Urgencia (ARREGLADO)
 st.markdown("""
-<div style="
-    background-color: #111827;
-    border-radius: 14px;
-    padding: 20px 22px;
-    text-align: center;
-    margin: 25px auto;
-    max-width: 440px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-    animation: pulse 2s infinite;
-">
-    <div style="
-        color: #ffffff;
-        font-weight: 900;
-        text-transform: uppercase;
-        font-size: 1.35rem;
-        margin-bottom: 12px;
-        letter-spacing: 0.5px;
-    ">
-        🔥 Últimos 3 departamentos disponibles
-    </div>
-
-    <div style="
-        background-color: #ffffff;
-        color: #111827;
-        display: inline-block;
-        padding: 12px 34px;
-        border-radius: 50px;
-        font-size: 1.35rem;
-        font-weight: 800;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-    ">
-        Desde $2,940,000.00
-    </div>
+<div class="price-box">
+  <div class="badge">🔥 Últimos 3 departamentos disponibles</div>
+  <div class="price-pill">Desde $2,940,000.00</div>
 </div>
 """, unsafe_allow_html=True)
-
-
 
 st.write("---")
 
@@ -267,12 +274,10 @@ with tab_a:
     img_modelo_a = load_image_for_st("imagen_2025-12-12_171537244.png", "PLANO TORRE A")
     st.image(img_modelo_a, use_container_width=True)
 
-
 with tab_b:
     st.markdown("##### 🏢 Modelo B")
     img_modelo_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO TORRE B")
     st.image(img_modelo_b, use_container_width=True)
-   
 
 st.write("---")
 
@@ -286,65 +291,4 @@ carousel_data = [
     {"file": "Foto2.jpg", "caption": "Vistas Exteriores"},
     {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
-    {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminadas"},
-    {"file": "foto6.jpg", "caption": "Sala Comedor"},
-    {"file": "foto7.jpg", "caption": "Área de Servicio"},
-    {"file": "foto8.jpg", "caption": "2 Cajones de Estacionamiento por Departamento"},
-    {"file": "foto9.jpg", "caption": "Detalles de Fachada Lateral"},
-    {"file": "foto10.jpg", "caption": "Estructura Sólida y Diseño Urbano"}
-]
-
-slides_markup = ""
-for item in carousel_data:
-    b64 = get_base64_image(item["file"])
-    slides_markup += f"""<div class="mySlides fade"><img src="{b64}" style="width:100%"><div class="text">{item["caption"]}</div></div>"""
-
-html_code = f"""
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {{box-sizing: border-box;}}
-body {{font-family: sans-serif; margin: 0;}}
-.mySlides {{display: none;}}
-img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; border-radius: 12px;}}
-.slideshow-container {{max-width: 100%; position: relative; margin: auto;}}
-.prev, .next {{cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -22px; color: white; font-weight: bold; font-size: 24px; transition: 0.6s ease; border-radius: 0 3px 3px 0; user-select: none; background-color: rgba(0,0,0,0.2); text-shadow: 1px 1px 2px black;}}
-.next {{right: 0; border-radius: 3px 0 0 3px;}}
-.prev:hover, .next:hover {{background-color: rgba(0,0,0,0.7);}}
-.text {{color: #f2f2f2; font-size: 16px; padding: 12px; position: absolute; bottom: 0px; width: 100%; text-align: center; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; font-family: 'Helvetica', sans-serif; letter-spacing: 0.5px;}}
-.fade {{animation-name: fade; animation-duration: 1.5s;}}
-@keyframes fade {{from {{opacity: .4}} to {{opacity: 1}}}}
-</style>
-</head>
-<body>
-<div class="slideshow-container">
-{slides_markup}
-<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-<a class="next" onclick="plusSlides(1)">&#10095;</a>
-</div>
-<script>
-let slideIndex = 1;
-let timer;
-showSlides(slideIndex);
-timer = setInterval(function() {{ plusSlides(1); }}, 4000);
-function plusSlides(n) {{ clearInterval(timer); timer = setInterval(function() {{ plusSlides(1); }}, 4000); showSlides(slideIndex += n); }}
-function showSlides(n) {{ let i; let slides = document.getElementsByClassName("mySlides"); if (n > slides.length) {{slideIndex = 1}} if (n < 1) {{slideIndex = slides.length}} for (i = 0; i < slides.length; i++) {{ slides[i].style.display = "none"; }} slides[slideIndex-1].style.display = "block"; }}
-</script>
-</body>
-</html>
-"""
-components.html(html_code, height=460)
-
-st.write("---")
-
-# Contacto
-st.subheader("¿Te interesa?")
-st.write("Contactanos por WhatsApp")
-phone = "522221256530"
-link_wa = f"https://wa.me/{phone}?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20Deptos%2033.10"
-st.markdown(f"""<a href="{link_wa}" target="_blank" style="text-decoration: none;"><button style="width: 100%; background-color: #25D366; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;"><span>📲</span> CONTACTA UN ASESOR</button></a>""", unsafe_allow_html=True)
-
-# Footer limpio
-st.markdown("<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>", unsafe_allow_html=True)
+    {"
