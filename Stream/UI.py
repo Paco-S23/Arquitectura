@@ -241,7 +241,8 @@ with tab_a:
 with tab_b:
     st.markdown("##### 🏢 Modelo B")
     img_modelo_b = load_image_for_st("imagen_2025-12-12_170832401.png", "PLANO TORRE B")
-    
+    st.image(img_modelo_b, use_container_width=True)
+   
 
 st.write("---")
 
