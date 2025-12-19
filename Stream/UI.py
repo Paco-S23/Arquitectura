@@ -19,76 +19,65 @@ st.markdown("""
         background-color: #f8f9fa !important;
         color: #212529 !important;
     }
-    
-    /* 2. OCULTAR ELEMENTOS DE INTERFAZ (GitHub, Menús, etc.) */
-    
-    /* Oculta la barra superior completa (donde sale tu foto y el menú) */
+
+    /* 2. OCULTAR ELEMENTOS DE INTERFAZ (SIN ROMPER LA APP) */
+
+    /* OJO: NO usar display:none en header/toolbar (a veces rompe todo) */
     header[data-testid="stHeader"] {
-        visibility: hidden;
-        display: none !important;
+        visibility: hidden !important;
         height: 0px !important;
+        min-height: 0px !important;
         padding: 0px !important;
+        margin: 0px !important;
+        pointer-events: none !important;
     }
-    
-    /* Oculta el menú de hamburguesa específicamente */
+
+    /* Oculta el menú de hamburguesa */
     #MainMenu {
-        visibility: hidden;
-        display: none !important;
+        visibility: hidden !important;
     }
-    
-    /* Oculta el footer estándar dentro de la app */
+
+    /* Oculta el footer estándar */
     footer {
-        visibility: hidden;
-        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
     }
-    
-    /* Oculta la barra de herramientas del desarrollador */
+
+    /* Oculta la barra de herramientas */
     div[data-testid="stToolbar"] {
-        visibility: hidden; 
-        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+        min-height: 0px !important;
+        pointer-events: none !important;
     }
-    
-    /* Oculta el botón de 'Deploy' si llegara a aparecer */
+
+    /* Oculta botón Deploy si aparece */
     .stDeployButton {
         display: none !important;
     }
-    
-    /* Ajuste para subir el contenido al tope de la pantalla */
+
+    /* Ajuste para subir el contenido */
     .block-container {
-        padding-top: 2rem !important; /* Mínimo espacio arriba */
+        padding-top: 2rem !important;
         padding-bottom: 2rem !important;
     }
 
     /* 3. Estilos del Flyer */
-    
-    /* Tipografía */
+
     h1 {
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
-        color: #111827 !important; 
-        font-weight: 800; 
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: #111827 !important;
+        font-weight: 800;
         text-transform: uppercase;
         font-size: 2.2rem;
         text-align: center;
         margin-bottom: 0.5rem;
     }
-    
-    h2, h3 {color: #343a40 !important;}
-    p {color: #495057 !important;}
-    
-    /* Etiqueta de Precio (NO usada ya, pero la dejo por si la usas después) */
-    .price-tag {
-        background-color: #2b2b2b;
-        color: #ffffff;
-        padding: 12px 30px;
-        font-size: 1.4rem;
-        font-weight: 700;
-        border-radius: 50px;
-        display: inline-block;
-        margin-top: 10px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
 
-    /* Mensaje de Urgencia */
+    h2, h3 { color: #343a40 !important; }
+    p { color: #495057 !important; }
+
+    /* Mensaje de urgencia (por si lo usas luego) */
     .urgency-box {
         background-color: #ffebee;
         color: #c62828;
@@ -102,7 +91,7 @@ st.markdown("""
         font-size: 1.5rem;
         animation: pulse 2s infinite;
     }
-    
+
     @keyframes pulse {
         0% { transform: scale(1); }
         50% { transform: scale(1.02); }
@@ -138,7 +127,7 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
-    
+
     hr { border-color: #dee2e6; margin: 40px 0; }
 
     /* --- Caja de precio (ARREGLADA: responsive + sin desbordes) --- */
@@ -188,20 +177,25 @@ def get_valid_path(filename):
     base_dirs = ["", "Stream", "stream"]
     name, ext = os.path.splitext(filename)
     variations = [
-        filename, 
-        filename.lower(), 
+        filename,
+        filename.lower(),
         filename.capitalize(),
         f"{name.lower()}{ext.lower()}",
         f"{name.capitalize()}{ext.lower()}"
     ]
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+    except NameError:
+        current_dir = os.getcwd()
+
     for base in base_dirs:
         for variant in variations:
-            if os.path.exists(os.path.join(base, variant)):
-                return os.path.join(base, variant)
-            full_path = os.path.join(current_dir, base, variant)
-            if os.path.exists(full_path):
-                return full_path
+            p1 = os.path.join(base, variant)
+            if os.path.exists(p1):
+                return p1
+            p2 = os.path.join(current_dir, base, variant)
+            if os.path.exists(p2):
+                return p2
     return None
 
 def load_image_for_st(filename, fallback_text="IMAGEN"):
@@ -213,16 +207,21 @@ def load_image_for_st(filename, fallback_text="IMAGEN"):
 def get_base64_image(filename):
     path = get_valid_path(filename)
     if path:
+        ext = os.path.splitext(path)[1].lower().replace(".", "")
+        mime = "jpeg" if ext in ["jpg", "jpeg"] else ext
         with open(path, "rb") as img_file:
-            return f"data:image/jpeg;base64,{base64.b64encode(img_file.read()).decode()}"
+            return f"data:image/{mime};base64,{base64.b64encode(img_file.read()).decode()}"
     return "https://placehold.co/800x500/e9ecef/6c757d/png?text=Cargando..."
 
 # --- CONTENIDO ---
 st.title("Departamentos 33.10")
-st.markdown("<div style='text-align: center; color: #6c757d; margin-bottom: 20px; font-weight: 500;'>33 Oriente #10, Puebla, Pue.</div>", unsafe_allow_html=True)
+st.markdown(
+    "<div style='text-align: center; color: #6c757d; margin-bottom: 20px; font-weight: 500;'>33 Oriente #10, Puebla, Pue.</div>",
+    unsafe_allow_html=True
+)
 
 # Portada
-hero_image = load_image_for_st("imagen_2025-12-07_200507713.png", "FACHADA PRINCIPAL") 
+hero_image = load_image_for_st("imagen_2025-12-07_200507713.png", "FACHADA PRINCIPAL")
 col_L, col_C, col_R = st.columns([0.1, 4, 0.1])
 with col_C:
     st.image(hero_image, use_container_width=True)
@@ -261,7 +260,10 @@ with c2:
 with c3:
     st.markdown('<div class="time-card"><div class="time-val">10 min</div><div class="time-label">Centro Histórico</div></div>', unsafe_allow_html=True)
 
-st.markdown("<div style='text-align:center; color:#888; font-size:0.8rem; margin-top:5px;'>Cerca de: Parque Juárez, La Noria y Zona Universitaria.</div>", unsafe_allow_html=True)
+st.markdown(
+    "<div style='text-align:center; color:#888; font-size:0.8rem; margin-top:5px;'>Cerca de: Parque Juárez, La Noria y Zona Universitaria.</div>",
+    unsafe_allow_html=True
+)
 
 st.write("---")
 
@@ -291,4 +293,89 @@ carousel_data = [
     {"file": "Foto2.jpg", "caption": "Vistas Exteriores"},
     {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
-    {"
+    {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminadas"},
+    {"file": "foto6.jpg", "caption": "Sala Comedor"},
+    {"file": "foto7.jpg", "caption": "Área de Servicio"},
+    {"file": "foto8.jpg", "caption": "2 Cajones de Estacionamiento por Departamento"},
+    {"file": "foto9.jpg", "caption": "Detalles de Fachada Lateral"},
+    {"file": "foto10.jpg", "caption": "Estructura Sólida y Diseño Urbano"}
+]
+
+slides_markup = ""
+for item in carousel_data:
+    b64 = get_base64_image(item["file"])
+    slides_markup += f"""<div class="mySlides fade"><img src="{b64}" style="width:100%"><div class="text">{item["caption"]}</div></div>"""
+
+html_code = f"""
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {{box-sizing: border-box;}}
+body {{font-family: sans-serif; margin: 0;}}
+.mySlides {{display: none;}}
+img {{vertical-align: middle; width: 100%; height: 450px; object-fit: cover; border-radius: 12px;}}
+.slideshow-container {{max-width: 100%; position: relative; margin: auto;}}
+.prev, .next {{cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -22px; color: white; font-weight: bold; font-size: 24px; transition: 0.6s ease; border-radius: 0 3px 3px 0; user-select: none; background-color: rgba(0,0,0,0.2); text-shadow: 1px 1px 2px black;}}
+.next {{right: 0; border-radius: 3px 0 0 3px;}}
+.prev:hover, .next:hover {{background-color: rgba(0,0,0,0.7);}}
+.text {{color: #f2f2f2; font-size: 16px; padding: 12px; position: absolute; bottom: 0px; width: 100%; text-align: center; background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; font-family: 'Helvetica', sans-serif; letter-spacing: 0.5px;}}
+.fade {{animation-name: fade; animation-duration: 1.5s;}}
+@keyframes fade {{from {{opacity: .4}} to {{opacity: 1}}}}
+</style>
+</head>
+<body>
+<div class="slideshow-container">
+{slides_markup}
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>
+</div>
+<script>
+let slideIndex = 1;
+let timer;
+showSlides(slideIndex);
+timer = setInterval(function() {{ plusSlides(1); }}, 4000);
+
+function plusSlides(n) {{
+  clearInterval(timer);
+  timer = setInterval(function() {{ plusSlides(1); }}, 4000);
+  showSlides(slideIndex += n);
+}}
+
+function showSlides(n) {{
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  if (n > slides.length) {{ slideIndex = 1; }}
+  if (n < 1) {{ slideIndex = slides.length; }}
+  for (i = 0; i < slides.length; i++) {{
+    slides[i].style.display = "none";
+  }}
+  slides[slideIndex-1].style.display = "block";
+}}
+</script>
+</body>
+</html>
+"""
+components.html(html_code, height=460)
+
+st.write("---")
+
+# Contacto
+st.subheader("¿Te interesa?")
+st.write("Contactanos por WhatsApp")
+
+phone = "522221256530"
+link_wa = f"https://wa.me/{phone}?text=Hola,%20me%20interesa%20informaci%C3%B3n%20de%20Deptos%2033.10"
+st.markdown(
+    f"""<a href="{link_wa}" target="_blank" style="text-decoration: none;">
+    <button style="width: 100%; background-color: #25D366; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <span>📲</span> CONTACTA UN ASESOR</button></a>""",
+    unsafe_allow_html=True
+)
+
+# Footer limpio
+st.markdown(
+    "<div style='text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;'>© 2025 Departamentos 33.10</div>",
+    unsafe_allow_html=True
+)
