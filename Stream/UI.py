@@ -190,41 +190,42 @@ with col_C:
 
 # Precio y Urgencia
 st.markdown("""
+<div style="
+    background-color: #111827;
+    border-radius: 14px;
+    padding: 20px 22px;
+    text-align: center;
+    margin: 25px auto;
+    max-width: 440px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    animation: pulse 2s infinite;
+">
     <div style="
-        background-color: #111827;
-        border-radius: 14px;
-        padding: 20px 22px;
-        text-align: center;
-        margin: 25px auto;
-        max-width: 440px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-        animation: pulse 2s infinite;
+        color: #ffffff;
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 1.35rem;
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
     ">
-        <div style="
-            color: #ffffff;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 1.35rem;
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
-        ">
-            🔥 Últimos 3 departamentos disponibles
-        </div>
-
-        <div style="
-            background-color: #ffffff;
-            color: #111827;
-            display: inline-block;
-            padding: 12px 34px;
-            border-radius: 50px;
-            font-size: 1.35rem;
-            font-weight: 800;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        ">
-            Desde $2,940,000.00
-        </div>
+        🔥 Últimos 3 departamentos disponibles
     </div>
+
+    <div style="
+        background-color: #ffffff;
+        color: #111827;
+        display: inline-block;
+        padding: 12px 34px;
+        border-radius: 50px;
+        font-size: 1.35rem;
+        font-weight: 800;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    ">
+        Desde $2,940,000.00
+    </div>
+</div>
 """, unsafe_allow_html=True)
+
 
 
 st.write("---")
