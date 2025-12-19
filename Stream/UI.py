@@ -190,15 +190,40 @@ with col_C:
 
 # Precio y Urgencia
 st.markdown("""
-    <div style="text-align: center; margin-top: 20px;">
-        <div class="urgency-box">
+    <div style="
+        background-color: #ffebee;
+        border: 1px solid #ffcdd2;
+        border-radius: 12px;
+        padding: 18px 20px;
+        text-align: center;
+        margin: 20px auto;
+        max-width: 420px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        animation: pulse 2s infinite;
+    ">
+        <div style="
+            color: #c62828;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        ">
             🔥 Últimos 3 departamentos disponibles 🔥
         </div>
-        <div class="price-tag" style="margin-top: 10px;">
+        <div style="
+            background-color: #2b2b2b;
+            color: white;
+            display: inline-block;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-size: 1.3rem;
+            font-weight: 700;
+        ">
             Desde $2,940,000.00
         </div>
     </div>
 """, unsafe_allow_html=True)
+
 
 
 st.write("---")
