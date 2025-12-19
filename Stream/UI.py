@@ -21,8 +21,6 @@ st.markdown("""
     }
 
     /* 2. OCULTAR ELEMENTOS DE INTERFAZ (SIN ROMPER LA APP) */
-
-    /* OJO: NO usar display:none en header/toolbar (a veces rompe todo) */
     header[data-testid="stHeader"] {
         visibility: hidden !important;
         height: 0px !important;
@@ -32,18 +30,15 @@ st.markdown("""
         pointer-events: none !important;
     }
 
-    /* Oculta el menú de hamburguesa */
     #MainMenu {
         visibility: hidden !important;
     }
 
-    /* Oculta el footer estándar */
     footer {
         visibility: hidden !important;
         height: 0px !important;
     }
 
-    /* Oculta la barra de herramientas */
     div[data-testid="stToolbar"] {
         visibility: hidden !important;
         height: 0px !important;
@@ -51,19 +46,16 @@ st.markdown("""
         pointer-events: none !important;
     }
 
-    /* Oculta botón Deploy si aparece */
     .stDeployButton {
         display: none !important;
     }
 
-    /* Ajuste para subir el contenido */
     .block-container {
         padding-top: 2rem !important;
         padding-bottom: 2rem !important;
     }
 
-    /* 3. Estilos del Flyer */
-
+    /* 3. Tipografía */
     h1 {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         color: #111827 !important;
@@ -77,21 +69,7 @@ st.markdown("""
     h2, h3 { color: #343a40 !important; }
     p { color: #495057 !important; }
 
-    /* Mensaje de urgencia (por si lo usas luego) */
-    .urgency-box {
-        background-color: #ffebee;
-        color: #c62828;
-        border: 1px solid #ffcdd2;
-        padding: 12px;
-        border-radius: 8px;
-        text-align: center;
-        font-weight: 800;
-        text-transform: uppercase;
-        margin: 15px 0;
-        font-size: 1.5rem;
-        animation: pulse 2s infinite;
-    }
-
+    /* Animación */
     @keyframes pulse {
         0% { transform: scale(1); }
         50% { transform: scale(1.02); }
@@ -130,7 +108,7 @@ st.markdown("""
 
     hr { border-color: #dee2e6; margin: 40px 0; }
 
-    /* --- Caja de precio (ARREGLADA: responsive + sin desbordes) --- */
+    /* --- Caja de precio (RESPONSIVE + SIN DESBORDES) --- */
     .price-box{
       background-color:#111827;
       border-radius:14px;
@@ -152,6 +130,14 @@ st.markdown("""
       font-size:1.35rem;
       margin-bottom:12px;
       letter-spacing:0.5px;
+      line-height: 1.15;
+    }
+    .price-box .badge-sub{
+      display:block;
+      margin-top:6px;
+      font-size:1.05rem;
+      font-weight:700;
+      opacity:0.9;
     }
     .price-box .price-pill{
       background-color:#ffffff;
@@ -167,6 +153,7 @@ st.markdown("""
     @media (max-width:480px){
       .price-box{ padding:18px 16px; }
       .price-box .badge{ font-size:1.1rem; }
+      .price-box .badge-sub{ font-size:0.95rem; }
       .price-box .price-pill{ font-size:1.15rem; padding:10px 18px; }
     }
 </style>
@@ -226,11 +213,14 @@ col_L, col_C, col_R = st.columns([0.1, 4, 0.1])
 with col_C:
     st.image(hero_image, use_container_width=True)
 
-# Precio y Urgencia (ARREGLADO)
+# Precio y Urgencia (DOS LÍNEAS)
 st.markdown("""
 <div class="price-box">
-  <div class="badge">Últimos 3 departamentos disponibles</div>
-  <div class="price-pill">Desde $2,940,000.00 </div>
+  <div class="badge">
+    ¡¡ÚLTIMA OPORTUNIDAD!!<br>
+    <span class="badge-sub">ÚLTIMOS 3 DEPARTAMENTOS DISPONIBLES</span>
+  </div>
+  <div class="price-pill">Desde $2,940,000.00</div>
 </div>
 """, unsafe_allow_html=True)
 
