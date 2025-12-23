@@ -217,7 +217,7 @@ with col_C:
 st.markdown("""
 <div class="price-box">
   <div class="badge">
-    🔥 ÚLTIMA OPORTUNIDAD 🔥 <br>
+    ÚLTIMA OPORTUNIDAD  <br>
     <span class="badge-sub">¡¡Últimos 3 Departamentos Disponibles!!</span>
   </div>
   <div class="price-pill">Desde $2,940,000.00</div>
