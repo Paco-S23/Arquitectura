@@ -277,18 +277,23 @@ st.write("---")
 st.subheader("📸 Galería del Proyecto")
 st.write("Descubre cada detalle de tu próximo hogar.")
 
+# --- ACTUALIZACIÓN DE IMÁGENES SEGÚN INSTRUCCIONES DEL USUARIO ---
+# Sala / Comedor -> Imagen 4 y Imagen 5
+# Cocina -> Imagen 1 y Imagen 3
+# Baño -> Imagen 2 (agregada)
+
 carousel_data = [
     {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
-    {"file": "Foto1.jpg", "caption": "Cocina Equipada y Cubierta de Cuarzo"},
+    {"file": "Imagen 1 .jpeg", "caption": "Cocina - Ángulo 1"},        # Cocina (imagen 1)
+    {"file": "Imagen 3 .jpeg", "caption": "Cocina - Ángulo 2"},        # Cocina (imagen 3)
     {"file": "Foto2.jpg", "caption": "Vistas Exteriores"},
     {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
-    {"file": "foto5.jpg", "caption": "Habitaciones Amplias e Iluminadas"},
-    {"file": "foto6.jpg", "caption": "Sala Comedor"},
+    {"file": "Imagen 4 .jpeg", "caption": "Sala - Ángulo 1"},          # Sala (imagen 4)
+    {"file": "Imagen 5 .jpeg", "caption": "Sala - Ángulo 2"},          # Sala (imagen 5)
     {"file": "foto7.jpg", "caption": "Área de Servicio"},
     {"file": "foto8.jpg", "caption": "2 Cajones de Estacionamiento por Departamento"},
-    {"file": "foto9.jpg", "caption": "Detalles de Fachada Lateral"},
-    {"file": "foto10.jpg", "caption": "Estructura Sólida y Diseño Urbano"}
+    {"file": "Imagen 2.jpeg", "caption": "Baño - Detalle"}             # Baño (imagen 2) agregado
 ]
 
 slides_markup = ""
