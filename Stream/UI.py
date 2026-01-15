@@ -284,8 +284,8 @@ st.write("Descubre cada detalle de tu próximo hogar.")
 
 carousel_data = [
     {"file": "foto11.jpg", "caption": "Fachada Principal con Áreas Verdes"},
-    {"file": "Imagen 1 .jpeg", "caption": "Cocina - Ángulo 1"},        # Cocina (imagen 1)
-    {"file": "Imagen 3 .jpeg", "caption": "Cocina - Ángulo 2"},        # Cocina (imagen 3)
+    {"file": "Imagen 1 .jpeg", "caption": "Cocina - Con barra de Cuarzo"},        # Cocina (imagen 1)
+    {"file": "Imagen 3 .jpeg", "caption": "Cocina Integral Equipada"},        # Cocina (imagen 3)
     {"file": "Foto2.jpg", "caption": "Vistas Exteriores"},
     {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
