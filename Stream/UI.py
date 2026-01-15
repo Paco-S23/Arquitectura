@@ -289,8 +289,8 @@ carousel_data = [
     {"file": "Foto2.jpg", "caption": "Vistas Exteriores"},
     {"file": "Foto3.jpg", "caption": "Patios Interiores y Ventilación"},
     {"file": "Foto4.jpg", "caption": "Arquitectura Moderna"},
-    {"file": "Imagen 4 .jpeg", "caption": "Sala - Ángulo 1"},          # Sala (imagen 4)
-    {"file": "Imagen 5 .jpeg", "caption": "Sala - Ángulo 2"},          # Sala (imagen 5)
+    {"file": "Imagen 4 .jpeg", "caption": "Sala - Comedor"},          # Sala (imagen 4)
+    {"file": "Imagen 5 .jpeg", "caption": "Sala - Comedor"},          # Sala (imagen 5)
     {"file": "foto7.jpg", "caption": "Área de Servicio"},
     {"file": "foto8.jpg", "caption": "2 Cajones de Estacionamiento por Departamento"},
     {"file": "Imagen 2.jpeg", "caption": "Baño - Detalle"}             # Baño (imagen 2) agregado
